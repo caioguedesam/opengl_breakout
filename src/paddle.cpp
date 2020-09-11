@@ -16,3 +16,8 @@ Paddle::Paddle(vec2 size, vec2 center, vec4 color, float moveSpeed) {
 	this->moveDirection = vec2();
 	this->moveSpeed = moveSpeed;
 }
+
+void Paddle::movePaddle(int x, int y) {
+	center.x = x;
+	//center.y = y;
+}

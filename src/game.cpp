@@ -3,6 +3,7 @@
 Game::Game() {
 	displayWidth = 800;
 	displayHeight = 600;
+	mousePosition = vec2(0.0, 0.0);
 
 	paddleOrigin = vec2(0, -200);
 	paddleSize = vec2(30, 5);
@@ -31,11 +32,23 @@ void Game::reshape(int w, int h) {
 	glLoadIdentity();
 }
 
+void Game::mouseMove(int x, int y) {
+	mousePosition.x = x - displayWidth / 2;
+	mousePosition.y = -(y - displayHeight / 2);
+	std::cout << mousePosition.x << ", " << mousePosition.y << std::endl;
+}
+
+void Game::update(void) {
+	paddle.movePaddle(mousePosition.x, mousePosition.y);
+}
+
 void Game::draw(void) {
 	drawPaddle();
 }
 
 void Game::idle(void) {
+	// Update game logic every frame;
+	update();
 	// Refresh display every frame
 	glutPostRedisplay();
 }
