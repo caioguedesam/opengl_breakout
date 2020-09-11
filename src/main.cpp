@@ -10,6 +10,10 @@ void reshape(int w, int h) {
 	breakout.reshape(w, h);
 }
 
+void idle(void) {
+	breakout.idle();
+}
+
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 
@@ -21,6 +25,7 @@ int main(int argc, char** argv) {
 	breakout.init();
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
+	glutIdleFunc(idle);
 
 	glutMainLoop();
 
