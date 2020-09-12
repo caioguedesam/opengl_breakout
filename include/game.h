@@ -35,6 +35,7 @@ public:
 	void idle(void);
 
 	void updateDeltaTime(void);
+	void updateCollisions(void);
 
 	void initPaddle(vec2 size, vec2 position, vec4 color);
 	void initBall(float radius, vec2 position, vec4 color, vec2 direction, float speed);

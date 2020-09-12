@@ -48,8 +48,8 @@ void Game::mouseMove(int x, int y) {
 }
 
 void Game::update(void) {
-	// Update deltatime
 	updateDeltaTime();
+	updateCollisions();
 
 	// Move paddle along mouse position
 	paddle.movePaddle(mousePosition.x, mousePosition.y);
@@ -67,6 +67,10 @@ void Game::updateDeltaTime(void) {
 		deltaTime = 0.0005;
 	}
 	lastTime = timeElapsed;
+}
+
+void Game::updateCollisions(void) {
+	ball.checkPaddleCollision(paddle);
 }
 
 void Game::draw(void) {
