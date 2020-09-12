@@ -12,7 +12,7 @@ public:
 	vec2 brickSize;
 
 	Level();
-	Level(int brickCount, vec2 firstPosition = vec2(0.0, 0.0), vec2 padding = vec2(5.0, 5.0));
+	Level(std::vector<std::vector<int>> brickMatrix, vec2 firstPosition = vec2(0.0, 0.0), vec2 padding = vec2(5.0, 5.0));
 
 	void draw(void);
 	void drawBricks(void);

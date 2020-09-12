@@ -7,6 +7,7 @@
 #include "../include/deltatime.h"
 #include "../include/useful_math.h"
 #include <math.h>
+#include <vector>
 #include <iostream>
 #include <iomanip>
 
@@ -29,7 +30,7 @@ public:
 	float ballMaxSpeed, ballMinSpeed;
 
 	Level level;
-	float brickCount;
+	std::vector<std::vector<int>> brickMatrix;
 	vec2 firstBrickPos;
 	vec2 brickPadding;
 
@@ -47,6 +48,7 @@ public:
 	void initPaddle(vec2 size, vec2 position, vec4 color);
 	void initBall(float radius, vec2 position, vec4 color, vec2 direction, float maxSpeed, float minSpeed);
 	void initLevel(int brickCount, vec2 firstPosition, vec2 padding);
+	void initLevel(std::vector<std::vector<int>> brickMatrix, vec2 firstPosition, vec2 padding);
 
 	void drawPaddle(void);
 	void drawBall(void);

@@ -6,7 +6,7 @@ Level::Level() {
 	this->brickSize = vec2();
 }
 
-Level::Level(int brickCount, vec2 firstPosition, vec2 padding) {
+Level::Level(std::vector<std::vector<int>> brickMatrix, vec2 firstPosition, vec2 padding) {
 	this->bricks = std::vector<Brick*>();
 	this->firstPosition = firstPosition;
 	this->padding = padding;
@@ -15,13 +15,16 @@ Level::Level(int brickCount, vec2 firstPosition, vec2 padding) {
 	// Populating bricks
 	if (!bricks.empty()) bricks.clear();
 
-	for (unsigned int i = 0; i < brickCount; i++) {
-		std::cout << i << std::endl;
-		// Adapt later for brick matrix
-		vec2 pos = firstPosition + vec2(i * (brickSize.x * 2 + padding.x), 0.0);
-		Brick *brick = new Brick(brickSize, pos);
-		bricks.push_back(brick);
-		std::cout << "Brick at pos: " << pos.x << ", " << pos.y << std::endl;
+	for (unsigned int i = 0; i < brickMatrix.size(); i++) {
+		for (unsigned int j = 0; j < brickMatrix[i].size(); j++) {
+			// Create brick on position if matrix content is not 0 or lower
+			if (brickMatrix[i][j] > 0) {
+				vec2 pos = firstPosition + vec2(j * (brickSize.x * 2 + padding.x), i * (-brickSize.y * 2 - padding.y));
+				Brick* brick = new Brick(brickSize, pos, brickMatrix[i][j]);
+				bricks.push_back(brick);
+				std::cout << "Brick at pos: " << pos.x << ", " << pos.y << std::endl;
+			}
+		}
 	}
 }
 

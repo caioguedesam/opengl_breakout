@@ -19,15 +19,18 @@ Game::Game() {
 	ballMaxSpeed = 200.0;
 	ballMinSpeed = 100.0;
 
-	brickCount = 5;
+	brickMatrix = {
+		{2,0,2,0,2},
+		{0,1,0,1,0}
+	};
 	firstBrickPos = vec2(-200.0, 200.0);
-	brickPadding = vec2(5.0, 10.0);
+	brickPadding = vec2(5.0, 2.0);
 }
 
 void Game::init(void) {
 	initPaddle(paddleSize, paddleOrigin, paddleColor);
 	initBall(ballRadius, ballOrigin, ballColor, ballDirection, ballMaxSpeed, ballMinSpeed);
-	initLevel(brickCount, firstBrickPos, brickPadding);
+	initLevel(brickMatrix, firstBrickPos, brickPadding);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_FLAT);
@@ -104,8 +107,8 @@ void Game::initBall(float size, vec2 position, vec4 color, vec2 direction, float
 	ball = Ball(size, position, color, direction, maxSpeed, minSpeed);
 }
 
-void Game::initLevel(int brickCount, vec2 firstPosition, vec2 padding) {
-	level = Level(brickCount, firstPosition, padding);
+void Game::initLevel(std::vector<std::vector<int>> brickMatrix, vec2 firstPosition, vec2 padding) {
+	level = Level(brickMatrix, firstPosition, padding);
 }
 
 void Game::drawPaddle(void) {
