@@ -21,3 +21,15 @@ void Paddle::movePaddle(int x, int y) {
 	position.x = x;
 	//center.y = y;
 }
+
+void Paddle::draw(void) {
+	// Set paddle color
+	glColor3f(color.x, color.y, color.z);
+	// Calculating vertex positions and drawing paddle
+	glBegin(GL_POLYGON);
+	glVertex2f(position.x - size.x, position.y - size.y);
+	glVertex2f(position.x + size.x, position.y - size.y);
+	glVertex2f(position.x + size.x, position.y + size.y);
+	glVertex2f(position.x - size.x, position.y + size.y);
+	glEnd();
+}

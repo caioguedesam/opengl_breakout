@@ -106,3 +106,21 @@ void Ball::checkPaddleCollision(Paddle paddle) {
 		}
 	}
 }
+
+void Ball::draw(void) {
+	if (active) {
+		// Setting the ball color
+		glColor3f(color.x, color.y, color.z);
+		// Calculating vertex positions and drawing paddle
+		glBegin(GL_POLYGON);
+		// Using 50 segments, maybe change this later as ball attribute
+		for (int i = 0; i < 50.0; i++) {
+			// Calculates angle as (i/segments) percent of 2pi rad (360º)
+			float theta = 2.0f * PI * (float)i / 50.0f;
+			float x = radius * cos(theta);
+			float y = radius * sin(theta);
+			glVertex2f(position.x + x, position.y + y);
+		}
+		glEnd();
+	}
+}

@@ -95,31 +95,9 @@ void Game::initBall(float size, vec2 position, vec4 color, vec2 direction, float
 }
 
 void Game::drawPaddle(void) {
-	// Set paddle color
-	glColor3f(paddle.color.x, paddle.color.y, paddle.color.z);
-	// Calculating vertex positions and drawing paddle
-	glBegin(GL_POLYGON);
-	glVertex2f(paddle.position.x - paddle.size.x, paddle.position.y - paddle.size.y);
-	glVertex2f(paddle.position.x + paddle.size.x, paddle.position.y - paddle.size.y);
-	glVertex2f(paddle.position.x + paddle.size.x, paddle.position.y + paddle.size.y);
-	glVertex2f(paddle.position.x - paddle.size.x, paddle.position.y + paddle.size.y);
-	glEnd();
+	paddle.draw();
 }
 
 void Game::drawBall(void) {
-	if (ball.active) {
-		// Setting the ball color
-		glColor3f(ball.color.x, ball.color.y, ball.color.z);
-		// Calculating vertex positions and drawing paddle
-		glBegin(GL_POLYGON);
-		// Using 50 segments, maybe change this later as ball attribute
-		for (int i = 0; i < 50.0; i++) {
-			// Calculates angle as (i/segments) percent of 2pi rad (360º)
-			float theta = 2.0f * PI * (float)i / 50.0f;
-			float x = ball.radius * cos(theta);
-			float y = ball.radius * sin(theta);
-			glVertex2f(ball.position.x + x, ball.position.y + y);
-		}
-		glEnd();
-	}
+	ball.draw();
 }

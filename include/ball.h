@@ -34,4 +34,6 @@ public:
 	vec2 collisionDirectionWithPaddle(Paddle paddle);
 	float collisionAngle(vec2 collisionDirection);
 	void checkPaddleCollision(Paddle paddle);
+
+	void draw(void);
 };
