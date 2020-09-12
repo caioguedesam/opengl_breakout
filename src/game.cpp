@@ -17,11 +17,16 @@ Game::Game() {
 	ballColor = vec4(1.0, 1.0, 1.0, 1.0);
 	ballDirection = vec2(0.0, -1.0);
 	ballSpeed = 100.0;
+
+	brickCount = 5;
+	firstBrickPos = vec2(-200.0, 200.0);
+	brickPadding = vec2(5.0, 10.0);
 }
 
 void Game::init(void) {
 	initPaddle(paddleSize, paddleOrigin, paddleColor);
 	initBall(ballRadius, ballOrigin, ballColor, ballDirection, ballSpeed);
+	initLevel(brickCount, firstBrickPos, brickPadding);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_FLAT);
@@ -77,6 +82,7 @@ void Game::updateCollisions(void) {
 void Game::draw(void) {
 	drawPaddle();
 	drawBall();
+	drawLevel();
 }
 
 void Game::idle(void) {
@@ -94,10 +100,18 @@ void Game::initBall(float size, vec2 position, vec4 color, vec2 direction, float
 	ball = Ball(size, position, color, direction, speed);
 }
 
+void Game::initLevel(int brickCount, vec2 firstPosition, vec2 padding) {
+	level = Level(brickCount, firstPosition, padding);
+}
+
 void Game::drawPaddle(void) {
 	paddle.draw();
 }
 
 void Game::drawBall(void) {
 	ball.draw();
+}
+
+void Game::drawLevel(void) {
+	level.draw();
 }

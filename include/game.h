@@ -2,6 +2,7 @@
 #include <GL/freeglut.h>
 #include "../include/paddle.h"
 #include "../include/ball.h"
+#include "../include/level.h"
 #include "../include/vec.h"
 #include "../include/deltatime.h"
 #include "../include/useful_math.h"
@@ -27,6 +28,11 @@ public:
 	vec2 ballDirection;
 	float ballSpeed;
 
+	Level level;
+	float brickCount;
+	vec2 firstBrickPos;
+	vec2 brickPadding;
+
 	void init(void);
 	void display(void);
 	void reshape(int w, int h);
@@ -40,9 +46,11 @@ public:
 
 	void initPaddle(vec2 size, vec2 position, vec4 color);
 	void initBall(float radius, vec2 position, vec4 color, vec2 direction, float speed);
+	void initLevel(int brickCount, vec2 firstPosition, vec2 padding);
 
 	void drawPaddle(void);
 	void drawBall(void);
+	void drawLevel(void);
 
 	Game();
 };
