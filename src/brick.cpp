@@ -26,13 +26,15 @@ void Brick::destroyBrick(void) {
 }
 
 void Brick::draw(void) {
-	// Set brick color
-	glColor3f(color.x, color.y, color.z);
-	// Calculating vertex positions and drawing brick
-	glBegin(GL_POLYGON);
-	glVertex2f(position.x - size.x, position.y - size.y);
-	glVertex2f(position.x + size.x, position.y - size.y);
-	glVertex2f(position.x + size.x, position.y + size.y);
-	glVertex2f(position.x - size.x, position.y + size.y);
-	glEnd();
+	if (active) {
+		// Set brick color
+		glColor3f(color.x, color.y, color.z);
+		// Calculating vertex positions and drawing brick
+		glBegin(GL_POLYGON);
+		glVertex2f(position.x - size.x, position.y - size.y);
+		glVertex2f(position.x + size.x, position.y - size.y);
+		glVertex2f(position.x + size.x, position.y + size.y);
+		glVertex2f(position.x - size.x, position.y + size.y);
+		glEnd();
+	}
 }

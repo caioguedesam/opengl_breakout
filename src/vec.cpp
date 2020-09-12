@@ -24,6 +24,15 @@ vec2 vec2::operator+(const vec2& rhs) {
 	return result;
 }
 
+vec2 vec2::operator-(const vec2& rhs) {
+	vec2 result = vec2(this->x - rhs.x, this->y - rhs.y);
+	return result;
+}
+
+vec2 vec2::operator-() {
+	return vec2(-this->x, -this->y);
+}
+
 vec2 vec2::operator*(const vec2& rhs) {
 	vec2 result = vec2(this->x * rhs.x, this->y * rhs.y);
 	return result;
@@ -53,6 +62,15 @@ vec3 vec3::normalize() {
 vec3 vec3::operator+(const vec3& rhs) {
 	vec3 result = vec3(this->x + rhs.x, this->y + rhs.y, this->z + rhs.z);
 	return result;
+}
+
+vec3 vec3::operator-(const vec3& rhs) {
+	vec3 result = vec3(this->x - rhs.x, this->y - rhs.y, this->z - rhs.z);
+	return result;
+}
+
+vec3 vec3::operator-() {
+	return vec3(-this->x, -this->y, -this->z);
 }
 
 vec3 vec3::operator*(const vec3& rhs) {
@@ -86,6 +104,15 @@ vec4 vec4::normalize() {
 vec4 vec4::operator+(const vec4& rhs) {
 	vec4 result = vec4(this->x + rhs.x, this->y + rhs.y, this->z + rhs.z, this->w + rhs.w);
 	return result;
+}
+
+vec4 vec4::operator-(const vec4& rhs) {
+	vec4 result = vec4(this->x - rhs.x, this->y - rhs.y, this->z - rhs.z, this->w - rhs.w);
+	return result;
+}
+
+vec4 vec4::operator-() {
+	return vec4(-this->x, -this->y, -this->z, -this->w);
 }
 
 vec4 vec4::operator*(const vec4& rhs) {

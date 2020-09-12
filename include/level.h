@@ -6,7 +6,7 @@
 
 class Level {
 public:
-	std::vector<Brick> bricks;
+	std::vector<Brick*> bricks;
 	vec2 firstPosition;
 	vec2 padding;
 	vec2 brickSize;
@@ -16,4 +16,5 @@ public:
 
 	void draw(void);
 	void drawBricks(void);
+	void removeInactiveBricks(void);
 };

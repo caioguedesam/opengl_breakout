@@ -26,7 +26,7 @@ public:
 	float ballRadius;
 	vec4 ballColor;
 	vec2 ballDirection;
-	float ballSpeed;
+	float ballMaxSpeed, ballMinSpeed;
 
 	Level level;
 	float brickCount;
@@ -45,7 +45,7 @@ public:
 	void updateCollisions(void);
 
 	void initPaddle(vec2 size, vec2 position, vec4 color);
-	void initBall(float radius, vec2 position, vec4 color, vec2 direction, float speed);
+	void initBall(float radius, vec2 position, vec4 color, vec2 direction, float maxSpeed, float minSpeed);
 	void initLevel(int brickCount, vec2 firstPosition, vec2 padding);
 
 	void drawPaddle(void);

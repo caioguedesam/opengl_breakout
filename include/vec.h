@@ -10,6 +10,8 @@ public:
 	vec2(GLfloat x, GLfloat y);
 
 	vec2 operator+(const vec2& rhs);
+	vec2 operator-(const vec2& rhs);
+	vec2 operator-();
 	vec2 operator*(const vec2& rhs);
 
 	float magnitude();
@@ -25,6 +27,8 @@ public:
 	vec3(GLfloat x, GLfloat y, GLfloat z);
 
 	vec3 operator+(const vec3& rhs);
+	vec3 operator-(const vec3& rhs);
+	vec3 operator-();
 	vec3 operator*(const vec3& rhs);
 
 	float magnitude();
@@ -41,6 +45,8 @@ public:
 	vec4(GLfloat x, GLfloat y, GLfloat z, GLfloat w);
 
 	vec4 operator+(const vec4& rhs);
+	vec4 operator-(const vec4& rhs);
+	vec4 operator-();
 	vec4 operator*(const vec4& rhs);
 
 	float magnitude();

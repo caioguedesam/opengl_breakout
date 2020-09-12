@@ -1,5 +1,6 @@
 #pragma once
 #include "../include/vec.h"
+#include <iostream>
 
 class Brick {
 public:

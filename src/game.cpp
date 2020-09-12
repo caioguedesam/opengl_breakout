@@ -12,11 +12,12 @@ Game::Game() {
 	paddleSize = vec2(30, 5);
 	paddleColor = vec4(0.6, 0.6, 0.6, 1.0);
 
-	ballOrigin = vec2(0, 200);
+	ballOrigin = vec2(0, 150);
 	ballRadius = 5.0;
 	ballColor = vec4(1.0, 1.0, 1.0, 1.0);
 	ballDirection = vec2(0.0, -1.0);
-	ballSpeed = 100.0;
+	ballMaxSpeed = 200.0;
+	ballMinSpeed = 100.0;
 
 	brickCount = 5;
 	firstBrickPos = vec2(-200.0, 200.0);
@@ -25,7 +26,7 @@ Game::Game() {
 
 void Game::init(void) {
 	initPaddle(paddleSize, paddleOrigin, paddleColor);
-	initBall(ballRadius, ballOrigin, ballColor, ballDirection, ballSpeed);
+	initBall(ballRadius, ballOrigin, ballColor, ballDirection, ballMaxSpeed, ballMinSpeed);
 	initLevel(brickCount, firstBrickPos, brickPadding);
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -59,6 +60,8 @@ void Game::update(void) {
 	// Move paddle along mouse position
 	paddle.movePaddle(mousePosition.x, mousePosition.y);
 	ball.moveBall();
+
+	level.removeInactiveBricks();
 }
 
 void Game::updateDeltaTime(void) {
@@ -77,6 +80,7 @@ void Game::updateDeltaTime(void) {
 void Game::updateCollisions(void) {
 	ball.clampBallToScreenBounds(displayWidth, displayHeight);
 	ball.checkPaddleCollision(paddle);
+	ball.checkBrickCollision(level);
 }
 
 void Game::draw(void) {
@@ -96,8 +100,8 @@ void Game::initPaddle(vec2 size, vec2 position, vec4 color) {
 	paddle = Paddle(size, position, color);
 }
 
-void Game::initBall(float size, vec2 position, vec4 color, vec2 direction, float speed) {
-	ball = Ball(size, position, color, direction, speed);
+void Game::initBall(float size, vec2 position, vec4 color, vec2 direction, float maxSpeed, float minSpeed) {
+	ball = Ball(size, position, color, direction, maxSpeed, minSpeed);
 }
 
 void Game::initLevel(int brickCount, vec2 firstPosition, vec2 padding) {

@@ -68,6 +68,14 @@ bool Ball::collidesWithPaddle(Paddle paddle) {
 	return collidesWithRect(xmin, ymin, xmax, ymax);
 }
 
+bool Ball::collidesWithBrick(Brick brick) {
+	float xmin = brick.position.x - brick.size.x;
+	float ymin = brick.position.y - brick.size.y;
+	float xmax = brick.position.x + brick.size.x;
+	float ymax = brick.position.y + brick.size.y;
+	return collidesWithRect(xmin, ymin, xmax, ymax);
+}
+
 bool Ball::isBelowPaddle(Paddle paddle) {
 	return (position.y < paddle.position.y);
 }
@@ -78,6 +86,10 @@ vec2 Ball::collisionDirectionWithRect(float xcenter, float ycenter) {
 
 vec2 Ball::collisionDirectionWithPaddle(Paddle paddle) {
 	return collisionDirectionWithRect(paddle.position.x, paddle.position.y);
+}
+
+vec2 Ball::collisionDirectionWithBrick(Brick brick) {
+	return collisionDirectionWithRect(brick.position.x, brick.position.y);
 }
 
 float Ball::collisionAngle(vec2 collisionDirection) {
@@ -96,13 +108,24 @@ void Ball::checkPaddleCollision(Paddle paddle) {
 	}
 
 	if (collidesWithPaddle(paddle)) {
-		moveDirection = collisionDirectionWithPaddle(paddle);
+		// REVISE THIS LATER: how does changing direction when hitting paddle works.
+		vec2 collisionDir = collisionDirectionWithPaddle(paddle);
+		moveDirection = vec2(-collisionDir.x, collisionDir.y);
 
 		// Change speed based on angle hit
 		float angle = collisionAngle(moveDirection);
 		if (abs(angle) <= maxAngle) {
 			moveSpeed = minSpeed + (maxSpeed - minSpeed) * (abs(angle) / maxAngle);
 			moveSpeed = clampMax(moveSpeed, maxSpeed);
+		}
+	}
+}
+
+void Ball::checkBrickCollision(Level level) {
+	for (unsigned int i = 0; i < level.bricks.size(); i++) {
+		if (level.bricks[i]->active && collidesWithBrick(*level.bricks[i])) {
+			moveDirection = collisionDirectionWithBrick(*level.bricks[i]);
+			level.bricks[i]->hitBrick();
 		}
 	}
 }

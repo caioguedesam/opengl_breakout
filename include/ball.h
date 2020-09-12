@@ -5,6 +5,7 @@
 #include "../include/vec.h"
 #include "../include/deltatime.h"
 #include "../include/paddle.h"
+#include "../include/level.h"
 #include "../include/useful_math.h"
 
 class Ball {
@@ -27,13 +28,19 @@ public:
 	void moveBall();
 	void destroyBall();
 	void clampBallToScreenBounds(float width, float height);
+
 	bool collidesWithRect(float xmin, float ymin, float xmax, float ymax);
 	bool collidesWithPaddle(Paddle paddle);
+	bool collidesWithBrick(Brick brick);
 	bool isBelowPaddle(Paddle paddle);
+
 	vec2 collisionDirectionWithRect(float xcenter, float ycenter);
 	vec2 collisionDirectionWithPaddle(Paddle paddle);
+	vec2 collisionDirectionWithBrick(Brick brick);
 	float collisionAngle(vec2 collisionDirection);
+
 	void checkPaddleCollision(Paddle paddle);
+	void checkBrickCollision(Level level);
 
 	void draw(void);
 };
