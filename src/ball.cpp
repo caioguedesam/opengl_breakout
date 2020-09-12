@@ -6,16 +6,22 @@ Ball::Ball() {
 	this->color = vec4(0.0, 0.0, 0.0, 0.0);
 
 	this->moveDirection = vec2(0.0, -1.0);
-	this->moveSpeed = 10.0;
+	this->maxSpeed = 60.0;
+	this->minSpeed = 30.0;
+	this->moveSpeed = minSpeed;
+	this->maxAngle = 75.0;
 }
 
-Ball::Ball(float radius, vec2 position, vec4 color, vec2 moveDirection, float moveSpeed) {
+Ball::Ball(float radius, vec2 position, vec4 color, vec2 moveDirection, float maxSpeed, float minSpeed) {
 	this->position = position;
 	this->radius = radius;
 	this->color = color;
 
 	this->moveDirection = moveDirection;
-	this->moveSpeed = moveSpeed;
+	this->maxSpeed = maxSpeed;
+	this->minSpeed = minSpeed;
+	this->moveSpeed = minSpeed;
+	this->maxAngle = 75.0;
 }
 
 void Ball::moveBall() {
@@ -53,8 +59,25 @@ vec2 Ball::collisionDirectionWithPaddle(Paddle paddle) {
 	return collisionDirectionWithRect(paddle.position.x, paddle.position.y);
 }
 
+float Ball::collisionAngle(vec2 collisionDirection) {
+	vec2 up = vec2(0.0, 1.0);
+	vec2 dir = collisionDirection;
+	
+	vec2 product = up * dir;
+	float scalarProduct = product.x + product.y;
+	float cosine = scalarProduct / (up.magnitude() * dir.magnitude());
+	return acos(cosine) * (180/ 3.1415926f);
+}
+
 void Ball::checkPaddleCollision(Paddle paddle) {
 	if (collidesWithPaddle(paddle)) {
 		moveDirection = collisionDirectionWithPaddle(paddle);
+
+		// Change speed based on angle hit
+		float angle = collisionAngle(moveDirection);
+		if (abs(angle) <= maxAngle) {
+			moveSpeed = minSpeed + (maxSpeed - minSpeed) * (abs(angle) / maxAngle);
+			if (moveSpeed > maxSpeed) moveSpeed = maxSpeed;
+		}
 	}
 }
