@@ -9,6 +9,10 @@ public:
 	vec2();
 	vec2(GLfloat x, GLfloat y);
 
+	vec2 operator+(const vec2& rhs);
+	vec2 operator*(const vec2& rhs);
+
+	float magnitude();
 	vec2 normalize();
 };
 
@@ -20,6 +24,10 @@ public:
 	vec3();
 	vec3(GLfloat x, GLfloat y, GLfloat z);
 
+	vec3 operator+(const vec3& rhs);
+	vec3 operator*(const vec3& rhs);
+
+	float magnitude();
 	vec3 normalize();
 };
 
@@ -32,5 +40,9 @@ public:
 	vec4();
 	vec4(GLfloat x, GLfloat y, GLfloat z, GLfloat w);
 
+	vec4 operator+(const vec4& rhs);
+	vec4 operator*(const vec4& rhs);
+
+	float magnitude();
 	vec4 normalize();
 };
