@@ -4,6 +4,7 @@
 #include "../include/ball.h"
 #include "../include/vec.h"
 #include "../include/deltatime.h"
+#include <math.h>
 #include <iostream>
 #include <iomanip>
 

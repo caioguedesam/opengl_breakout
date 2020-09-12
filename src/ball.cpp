@@ -19,7 +19,7 @@ Ball::Ball(float radius, vec2 position, vec4 color, vec2 moveDirection, float mo
 }
 
 void Ball::moveBall() {
-	position.x += moveDirection.x * moveSpeed * deltaTime;
-	position.y += moveDirection.y * moveSpeed * deltaTime;
-	std::cout << position.x << ", " << position.y << std::endl;
+	vec2 normalizedDir = moveDirection.normalize();
+	position.x += normalizedDir.x * moveSpeed * deltaTime;
+	position.y += normalizedDir.y * moveSpeed * deltaTime;
 }
