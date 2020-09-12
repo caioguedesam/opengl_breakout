@@ -5,6 +5,7 @@
 #include "../include/vec.h"
 #include "../include/deltatime.h"
 #include "../include/paddle.h"
+#include "../include/useful_math.h"
 
 class Ball {
 public:

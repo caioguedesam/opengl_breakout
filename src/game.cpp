@@ -113,7 +113,7 @@ void Game::drawBall(void) {
 	// Using 50 segments, maybe change this later as ball attribute
 	for (int i = 0; i < 50.0; i++) {
 		// Calculates angle as (i/segments) percent of 2pi rad (360º)
-		float theta = 2.0f * 3.1415926f * (float)i / 50.0f;
+		float theta = 2.0f * PI * (float)i / 50.0f;
 		float x = ball.radius * cos(theta);
 		float y = ball.radius * sin(theta);
 		glVertex2f(ball.position.x + x, ball.position.y + y);

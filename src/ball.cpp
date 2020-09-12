@@ -66,7 +66,7 @@ float Ball::collisionAngle(vec2 collisionDirection) {
 	vec2 product = up * dir;
 	float scalarProduct = product.x + product.y;
 	float cosine = scalarProduct / (up.magnitude() * dir.magnitude());
-	return acos(cosine) * (180/ 3.1415926f);
+	return acos(cosine) * (180 / PI);
 }
 
 void Ball::checkPaddleCollision(Paddle paddle) {
@@ -77,7 +77,7 @@ void Ball::checkPaddleCollision(Paddle paddle) {
 		float angle = collisionAngle(moveDirection);
 		if (abs(angle) <= maxAngle) {
 			moveSpeed = minSpeed + (maxSpeed - minSpeed) * (abs(angle) / maxAngle);
-			if (moveSpeed > maxSpeed) moveSpeed = maxSpeed;
+			moveSpeed = clampMax(moveSpeed, maxSpeed);
 		}
 	}
 }
