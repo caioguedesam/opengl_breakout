@@ -70,6 +70,7 @@ void Game::updateDeltaTime(void) {
 }
 
 void Game::updateCollisions(void) {
+	ball.clampBallToScreenBounds(displayWidth, displayHeight);
 	ball.checkPaddleCollision(paddle);
 }
 
@@ -106,17 +107,19 @@ void Game::drawPaddle(void) {
 }
 
 void Game::drawBall(void) {
-	// Setting the ball color
-	glColor3f(ball.color.x, ball.color.y, ball.color.z);
-	// Calculating vertex positions and drawing paddle
-	glBegin(GL_POLYGON);
-	// Using 50 segments, maybe change this later as ball attribute
-	for (int i = 0; i < 50.0; i++) {
-		// Calculates angle as (i/segments) percent of 2pi rad (360º)
-		float theta = 2.0f * PI * (float)i / 50.0f;
-		float x = ball.radius * cos(theta);
-		float y = ball.radius * sin(theta);
-		glVertex2f(ball.position.x + x, ball.position.y + y);
+	if (ball.active) {
+		// Setting the ball color
+		glColor3f(ball.color.x, ball.color.y, ball.color.z);
+		// Calculating vertex positions and drawing paddle
+		glBegin(GL_POLYGON);
+		// Using 50 segments, maybe change this later as ball attribute
+		for (int i = 0; i < 50.0; i++) {
+			// Calculates angle as (i/segments) percent of 2pi rad (360º)
+			float theta = 2.0f * PI * (float)i / 50.0f;
+			float x = ball.radius * cos(theta);
+			float y = ball.radius * sin(theta);
+			glVertex2f(ball.position.x + x, ball.position.y + y);
+		}
+		glEnd();
 	}
-	glEnd();
 }

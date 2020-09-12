@@ -9,6 +9,8 @@
 
 class Ball {
 public:
+	bool active;
+
 	vec2 position;
 	float radius;
 	vec4 color;
@@ -23,8 +25,11 @@ public:
 		vec2 moveDirection = vec2(0.0, -1.0), float maxSpeed = 100.0, float minSpeed = 50.0);
 
 	void moveBall();
+	void destroyBall();
+	void clampBallToScreenBounds(float width, float height);
 	bool collidesWithRect(float xmin, float ymin, float xmax, float ymax);
 	bool collidesWithPaddle(Paddle paddle);
+	bool isBelowPaddle(Paddle paddle);
 	vec2 collisionDirectionWithRect(float xcenter, float ycenter);
 	vec2 collisionDirectionWithPaddle(Paddle paddle);
 	float collisionAngle(vec2 collisionDirection);

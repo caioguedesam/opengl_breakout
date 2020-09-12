@@ -1,6 +1,8 @@
 #include "../include/ball.h"
 
 Ball::Ball() {
+	this->active = true;
+
 	this->position = vec2(0.0, 0.0);
 	this->radius = 1.0;
 	this->color = vec4(0.0, 0.0, 0.0, 0.0);
@@ -13,6 +15,8 @@ Ball::Ball() {
 }
 
 Ball::Ball(float radius, vec2 position, vec4 color, vec2 moveDirection, float maxSpeed, float minSpeed) {
+	this->active = true;
+
 	this->position = position;
 	this->radius = radius;
 	this->color = color;
@@ -25,9 +29,22 @@ Ball::Ball(float radius, vec2 position, vec4 color, vec2 moveDirection, float ma
 }
 
 void Ball::moveBall() {
-	vec2 normalizedDir = moveDirection.normalize();
-	position.x += normalizedDir.x * moveSpeed * deltaTime;
-	position.y += normalizedDir.y * moveSpeed * deltaTime;
+	if (active) {
+		vec2 normalizedDir = moveDirection.normalize();
+		position.x += normalizedDir.x * moveSpeed * deltaTime;
+		position.y += normalizedDir.y * moveSpeed * deltaTime;
+	}
+}
+
+void Ball::destroyBall() {
+	active = false;
+}
+
+void Ball::clampBallToScreenBounds(float width, float height) {
+	if (position.x < (-width) / 2.0 || position.x > width / 2.0)
+		moveDirection.x = -moveDirection.x;
+	if (position.y < (-height) / 2.0 || position.y > height / 2.0)
+		moveDirection.y = -moveDirection.y;
 }
 
 bool Ball::collidesWithRect(float xmin, float ymin, float xmax, float ymax) {
@@ -51,6 +68,10 @@ bool Ball::collidesWithPaddle(Paddle paddle) {
 	return collidesWithRect(xmin, ymin, xmax, ymax);
 }
 
+bool Ball::isBelowPaddle(Paddle paddle) {
+	return (position.y < paddle.position.y);
+}
+
 vec2 Ball::collisionDirectionWithRect(float xcenter, float ycenter) {
 	return vec2(position.x - xcenter, position.y - ycenter).normalize();
 }
@@ -70,6 +91,10 @@ float Ball::collisionAngle(vec2 collisionDirection) {
 }
 
 void Ball::checkPaddleCollision(Paddle paddle) {
+	if (isBelowPaddle(paddle)) {
+		destroyBall();
+	}
+
 	if (collidesWithPaddle(paddle)) {
 		moveDirection = collisionDirectionWithPaddle(paddle);
 
