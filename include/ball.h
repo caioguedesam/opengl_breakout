@@ -27,6 +27,7 @@ public:
 
 	void moveBall();
 	void destroyBall();
+	void reset(vec2 resetPos, vec2 resetDir);
 	void clampBallToScreenBounds(float width, float height);
 
 	bool collidesWithRect(float xmin, float ymin, float xmax, float ymax);

@@ -16,6 +16,7 @@ public:
 
 	void draw(void);
 	void drawBricks(void);
-	void removeInactiveBricks(void);
+	void reset(void);
+
 	void deleteAllBricks(void);
 };

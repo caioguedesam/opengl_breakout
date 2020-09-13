@@ -37,16 +37,12 @@ void Level::drawBricks(void) {
 	}
 }
 
-void Level::removeInactiveBricks(void) {
-	/*std::vector<Brick*>::iterator it;
-	for (it = bricks.begin(); it != bricks.end(); ) {
-		if (!(*it)->active) {
-			delete (*it);
-			it = bricks.erase(it);
-		}
-		else
-			it++;
-	}*/
+void Level::reset(void) {
+	// Reactivates all bricks in brick list
+	std::vector<Brick*>::iterator it;
+	for (it = bricks.begin(); it != bricks.end(); it++) {
+		(*it)->active = true;
+	}
 }
 
 void Level::deleteAllBricks(void) {

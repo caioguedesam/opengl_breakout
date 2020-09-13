@@ -51,6 +51,7 @@ public:
 	void pause(void);
 	void play(void);
 	void quit(void);
+	void reset(void);
 
 	void updateDeltaTime(void);
 	void updateCollisions(void);

@@ -22,6 +22,10 @@ void Paddle::movePaddle(int x, int y) {
 	//center.y = y;
 }
 
+void Paddle::reset(vec2 resetPos) {
+	position.x = resetPos.x;
+}
+
 void Paddle::draw(void) {
 	// Set paddle color
 	glColor3f(color.x, color.y, color.z);

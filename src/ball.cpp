@@ -40,6 +40,13 @@ void Ball::destroyBall() {
 	active = false;
 }
 
+void Ball::reset(vec2 resetPos, vec2 resetDir) {
+	active = true;
+	position = resetPos;
+	moveDirection = resetDir;
+	moveSpeed = minSpeed;
+}
+
 void Ball::clampBallToScreenBounds(float width, float height) {
 	if (position.x < (-width) / 2.0 || position.x > width / 2.0)
 		moveDirection.x = -moveDirection.x;

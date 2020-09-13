@@ -81,6 +81,9 @@ void Game::keyboardInput(unsigned char key, int x, int y) {
 	case 'q':
 		quit();
 		break;
+	case 'r':
+		reset();
+		break;
 	default:
 		break;
 	}
@@ -94,8 +97,6 @@ void Game::update(void) {
 		// Move paddle along mouse position
 		paddle.movePaddle(mousePosition.x, mousePosition.y);
 		ball.moveBall();
-
-		//level.removeInactiveBricks();
 	}	
 }
 
@@ -147,6 +148,13 @@ void Game::play(void) {
 void Game::quit(void) {
 	level.deleteAllBricks();
 	exit(EXIT_SUCCESS);
+}
+
+void Game::reset(void) {
+	level.reset();
+	paddle.reset(paddleOrigin);
+	ball.reset(ballOrigin, ballDirection);
+	pause();
 }
 
 void Game::initPaddle(vec2 size, vec2 position, vec4 color) {
