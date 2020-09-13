@@ -2,6 +2,8 @@
 
 Game::Game() {
 	state = GameState::GAME_PAUSED;
+	pauseAfterUpdate = false;
+
 	score = 0;
 	scorePosition = vec2(-350.0, -250.0);
 	
@@ -77,8 +79,20 @@ void Game::mouseInput(int button, int buttonState, int x, int y) {
 				play();
 			else
 				pause();
+			pauseAfterUpdate = false;
 		}
 		break;
+	case GLUT_RIGHT_BUTTON:
+		// On mouse right click
+		if (buttonState == GLUT_DOWN) {
+			if (state == GameState::GAME_PAUSED)
+				play();
+			else
+				pause();
+			displayStats();
+			// Pause again after one update
+			pauseAfterUpdate = true;
+		}
 	default:
 		break;
 	}
@@ -109,7 +123,10 @@ void Game::update(void) {
 		// Move paddle along mouse position
 		paddle.movePaddle(mousePosition.x, mousePosition.y);
 		ball.moveBall();
-	}	
+
+		if (pauseAfterUpdate)
+			pause();
+	}
 }
 
 void Game::updateDeltaTime(void) {
@@ -232,4 +249,19 @@ void Game::drawLives(void) {
 	livesString = "LIVES: " + livesString;
 	//renderStrokeString(scorePosition.x, scorePosition.y, GLUT_STROKE_MONO_ROMAN, color, scoreString.c_str(), 0.1);
 	renderBitmapString(livesPosition.x, livesPosition.y, GLUT_BITMAP_HELVETICA_18, color, livesString.c_str());
+}
+
+void Game::displayStats(void) {
+	std::cout << "---------------------------------------" << std::endl;
+	std::cout << "Cycle at " << glutGet(GLUT_ELAPSED_TIME) << "ms" << std::endl;
+	std::cout << "---------------------------------------" << std::endl;
+	std::cout << "STATS: " << std::endl;
+	std::cout << "Paddle:" << std::endl;
+	std::cout << "	Position: (" << paddle.position.x << ", " << paddle.position.y << ")" << std::endl;
+	std::cout << "Ball: " << std::endl;
+	std::cout << "	Position: (" << ball.position.x << ", " << ball.position.y << ")" << std::endl;
+	std::cout << "	Move Direction: (" << ball.moveDirection.x << ", " << ball.moveDirection.y << ")" << std::endl;
+	std::cout << "	Move Speed: " << ball.moveSpeed << std::endl;
+	std::cout << "Bricks remaining: " << std::endl;
+	level.displayBrickStats();
 }

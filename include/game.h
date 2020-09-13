@@ -23,6 +23,7 @@ public:
 	vec2 mousePosition;
 
 	GameState state;
+	bool pauseAfterUpdate;
 	unsigned int score;
 	vec2 scorePosition;
 	
@@ -82,6 +83,8 @@ public:
 	void drawLevel(void);
 	void drawScore(void);
 	void drawLives(void);
+
+	void displayStats(void);
 
 	Game();
 };

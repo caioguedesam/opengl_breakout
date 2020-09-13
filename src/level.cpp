@@ -52,3 +52,14 @@ void Level::deleteAllBricks(void) {
 		it = bricks.erase(it);
 	}
 }
+
+void Level::displayBrickStats(void) {
+	std::vector<Brick*>::iterator it;
+	for (it = bricks.begin(); it != bricks.end(); it++) {
+		if ((*it)->active) {
+			int index = it - bricks.begin();
+			std::cout << "	Brick " << index << " (" << (*it)->hp << "HP), at position (" 
+				<< (*it)->position.x << ", " << (*it)->position.y << ")" << std::endl;
+		}
+	}
+}

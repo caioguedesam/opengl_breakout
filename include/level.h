@@ -19,4 +19,6 @@ public:
 	void reset(void);
 
 	void deleteAllBricks(void);
+
+	void displayBrickStats(void);
 };
