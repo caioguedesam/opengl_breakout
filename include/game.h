@@ -6,9 +6,11 @@
 #include "../include/vec.h"
 #include "../include/deltatime.h"
 #include "../include/useful_math.h"
+#include "../include/text_render.h"
 #include <cstdlib>
 #include <math.h>
 #include <vector>
+#include <string>
 #include <iostream>
 #include <iomanip>
 
@@ -16,11 +18,13 @@ enum class GameState { GAME_PAUSED, GAME_PLAYING };
 
 class Game {
 public:
-	GameState state;
-
 	const char* gameTitle = "Breakout!";
 	GLint displayWidth, displayHeight;
 	vec2 mousePosition;
+
+	GameState state;
+	unsigned int score;
+	vec2 scorePosition;
 
 	Paddle paddle;
 	vec2 paddleOrigin;
@@ -42,12 +46,16 @@ public:
 	void init(void);
 	void display(void);
 	void reshape(int w, int h);
+	
 	void mouseMove(int x, int y);
 	void mouseInput(int button, int buttonState, int x, int y);
 	void keyboardInput(unsigned char key, int x, int y);
-	void draw(void);
+	
 	void update(void);
 	void idle(void);
+
+	void scorePoint(void);
+	
 	void pause(void);
 	void play(void);
 	void quit(void);
@@ -60,9 +68,11 @@ public:
 	void initBall(float radius, vec2 position, vec4 color, vec2 direction, float maxSpeed, float minSpeed);
 	void initLevel(std::vector<std::vector<int>> brickMatrix, vec2 firstPosition, vec2 padding);
 
+	void draw(void);
 	void drawPaddle(void);
 	void drawBall(void);
 	void drawLevel(void);
+	void drawScore(void);
 
 	Game();
 };

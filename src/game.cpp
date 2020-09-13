@@ -2,6 +2,8 @@
 
 Game::Game() {
 	state = GameState::GAME_PAUSED;
+	score = 0;
+	scorePosition = vec2(-350.0, -250.0);
 
 	lastTime = 0;
 	deltaTime = 0.0;
@@ -120,13 +122,8 @@ void Game::updateDeltaTime(void) {
 void Game::updateCollisions(void) {
 	ball.clampBallToScreenBounds(displayWidth, displayHeight);
 	ball.checkPaddleCollision(paddle);
-	ball.checkBrickCollision(level);
-}
-
-void Game::draw(void) {
-	drawPaddle();
-	drawBall();
-	drawLevel();
+	if (ball.checkBrickCollision(level))
+		scorePoint();
 }
 
 void Game::idle(void) {
@@ -134,6 +131,11 @@ void Game::idle(void) {
 	update();
 	// Refresh display every frame
 	glutPostRedisplay();
+}
+
+void Game::scorePoint(void) {
+	score++;
+	std::cout << score << std::endl;
 }
 
 void Game::pause(void) {
@@ -169,6 +171,13 @@ void Game::initLevel(std::vector<std::vector<int>> brickMatrix, vec2 firstPositi
 	level = Level(brickMatrix, firstPosition, padding);
 }
 
+void Game::draw(void) {
+	drawScore();
+	drawPaddle();
+	drawBall();
+	drawLevel();
+}
+
 void Game::drawPaddle(void) {
 	paddle.draw();
 }
@@ -179,4 +188,12 @@ void Game::drawBall(void) {
 
 void Game::drawLevel(void) {
 	level.draw();
+}
+
+void Game::drawScore(void) {
+	vec4 color = vec4(1.0, 1.0, 1.0, 1.0);
+	std::string scoreString = std::to_string(score);
+	scoreString = "SCORE: " + scoreString;
+	//renderStrokeString(scorePosition.x, scorePosition.y, GLUT_STROKE_MONO_ROMAN, color, scoreString.c_str(), 0.1);
+	renderBitmapString(scorePosition.x, scorePosition.y, GLUT_BITMAP_HELVETICA_18, color, scoreString.c_str());
 }

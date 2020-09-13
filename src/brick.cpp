@@ -28,8 +28,7 @@ Brick::Brick(vec2 size, vec2 position, int hp) {
 	setColor();
 }
 
-// Change this later to get bricks that resist multiple hits
-void Brick::hitBrick(void) {
+bool Brick::hitBrick(void) {
 	unsigned int hitTime = glutGet(GLUT_ELAPSED_TIME);
 	if (hitTime - lastHitTime > 50) {
 		hp--;
@@ -38,7 +37,9 @@ void Brick::hitBrick(void) {
 			destroyBrick();
 
 		lastHitTime = hitTime;
+		return true;
 	}
+	return false;
 }
 
 void Brick::destroyBrick(void) {

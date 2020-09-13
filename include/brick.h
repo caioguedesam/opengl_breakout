@@ -18,7 +18,7 @@ public:
 	Brick();
 	Brick(vec2 size, vec2 position, int hp);
 
-	void hitBrick(void);
+	bool hitBrick(void);
 	void destroyBrick(void);
 	void setColor(void);
 
