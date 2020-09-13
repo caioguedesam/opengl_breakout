@@ -14,6 +14,7 @@ Brick::Brick() {
 	this->position = vec2();
 	this->size = vec2();
 	this->color = vec4();
+	this->originalHp = 1;
 	this->hp = 1;
 	this->lastHitTime = 0;
 }
@@ -23,7 +24,8 @@ Brick::Brick(vec2 size, vec2 position, int hp) {
 	
 	this->position = position;
 	this->size = size;
-	this->hp = hp;
+	this->originalHp = hp;
+	this->hp = originalHp;
 	this->lastHitTime = 0;
 	setColor();
 }

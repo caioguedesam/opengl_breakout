@@ -2,12 +2,14 @@
 
 Game::Game() {
 	state = GameState::GAME_PAUSED;
+	finishState = FinishState::GAME_UNFINISHED;
 	pauseAfterUpdate = false;
 
 	score = 0;
 	scorePosition = vec2(-350.0, -250.0);
 	
-	lives = 3;
+	startingLives = 3;
+	lives = startingLives;
 	livesPosition = vec2(280.0, -250.0);
 	isDead = false;
 	respawnOffset = vec2(0.0, 12.0);
@@ -24,12 +26,12 @@ Game::Game() {
 	paddleSize = vec2(30, 5);
 	paddleColor = vec4(0.6, 0.6, 0.6, 1.0);
 
-	ballOrigin = vec2(0, -100);
+	ballOrigin = vec2(0, 0);
 	ballRadius = 5.0;
 	ballColor = vec4(1.0, 1.0, 1.0, 1.0);
 	ballDirection = vec2(0.0, -1.0);
-	ballMaxSpeed = 200.0;
-	ballMinSpeed = 100.0;
+	ballMaxSpeed = 300.0;
+	ballMinSpeed = 150.0;
 
 	brickMatrix = {
 		{4,4,4,4,4,4,4,4,4,4,4},
@@ -119,6 +121,7 @@ void Game::update(void) {
 	if (state == GameState::GAME_PLAYING) {
 		updateDeltaTime();
 		updateCollisions();
+		checkGameFinish();
 
 		// Move paddle along mouse position
 		paddle.movePaddle(mousePosition.x, mousePosition.y);
@@ -155,6 +158,15 @@ void Game::updateCollisions(void) {
 		scorePoint();
 }
 
+void Game::checkGameFinish(void) {
+	if (!level.isAnyBrickActive()) {
+		win();
+	}
+	else if (lives == 0) {
+		lose();
+	}
+}
+
 void Game::idle(void) {
 	// Update game logic every frame;
 	update();
@@ -170,6 +182,16 @@ void Game::loseLife(void) {
 	lives--;
 	lives = clampMin(lives, 0);
 	isDead = true;
+}
+
+void Game::win(void) {
+	if (finishState == FinishState::GAME_UNFINISHED)
+		finishState = FinishState::GAME_WIN;
+}
+
+void Game::lose(void) {
+	if(finishState == FinishState::GAME_UNFINISHED)
+		finishState = FinishState::GAME_LOSE;
 }
 
 void Game::pause(void) {
@@ -190,6 +212,15 @@ void Game::reset(void) {
 	level.reset();
 	paddle.reset(paddleOrigin);
 	ball.reset(ballOrigin, ballDirection);
+
+	score = 0;
+	lives = startingLives;
+	isDead = false;
+	finishState = FinishState::GAME_UNFINISHED;
+
+	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+
 	pause();
 }
 
@@ -213,11 +244,21 @@ void Game::initLevel(std::vector<std::vector<int>> brickMatrix, vec2 firstPositi
 }
 
 void Game::draw(void) {
-	drawScore();
-	drawLives();
-	drawPaddle();
-	drawBall();
-	drawLevel();
+	switch (finishState) {
+	case FinishState::GAME_WIN:
+		drawVictoryScreen();
+		break;
+	case FinishState::GAME_LOSE:
+		drawDefeatScreen();
+		break;
+	default:
+		drawScore();
+		drawLives();
+		drawPaddle();
+		drawBall();
+		drawLevel();
+		break;
+	}
 }
 
 void Game::drawPaddle(void) {
@@ -249,6 +290,22 @@ void Game::drawLives(void) {
 	livesString = "LIVES: " + livesString;
 	//renderStrokeString(scorePosition.x, scorePosition.y, GLUT_STROKE_MONO_ROMAN, color, scoreString.c_str(), 0.1);
 	renderBitmapString(livesPosition.x, livesPosition.y, GLUT_BITMAP_HELVETICA_18, color, livesString.c_str());
+}
+
+void Game::drawVictoryScreen(void) {
+	glClearColor(0.325, 0.776, 0.490, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+	vec4 textColor = vec4(1.0, 1.0, 1.0, 1.0);
+	std::string text = "LEVEL COMPLETE";
+	renderStrokeString(-290.0, 0.0, GLUT_STROKE_MONO_ROMAN, textColor, text.c_str(), 0.4);
+}
+
+void Game::drawDefeatScreen(void) {
+	glClearColor(0.760, 0.219, 0.247, 1.0);
+	glClear(GL_COLOR_BUFFER_BIT);
+	vec4 textColor = vec4(1.0, 1.0, 1.0, 1.0);
+	std::string text = "GAME OVER";
+	renderStrokeString(-240.0, 0.0, GLUT_STROKE_MONO_ROMAN, textColor, text.c_str(), 0.5);
 }
 
 void Game::displayStats(void) {

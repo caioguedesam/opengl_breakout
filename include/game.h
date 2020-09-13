@@ -15,6 +15,7 @@
 #include <iomanip>
 
 enum class GameState { GAME_PAUSED, GAME_PLAYING };
+enum class FinishState { GAME_WIN, GAME_LOSE, GAME_UNFINISHED };
 
 class Game {
 public:
@@ -23,11 +24,14 @@ public:
 	vec2 mousePosition;
 
 	GameState state;
+	FinishState finishState;
 	bool pauseAfterUpdate;
+
 	unsigned int score;
 	vec2 scorePosition;
 	
 	unsigned int lives;
+	unsigned int startingLives;
 	vec2 livesPosition;
 	bool isDead;
 	vec2 respawnOffset;
@@ -63,6 +67,8 @@ public:
 
 	void scorePoint(void);
 	void loseLife(void);
+	void win(void);
+	void lose(void);
 	
 	void pause(void);
 	void play(void);
@@ -72,6 +78,7 @@ public:
 
 	void updateDeltaTime(void);
 	void updateCollisions(void);
+	void checkGameFinish(void);
 
 	void initPaddle(vec2 size, vec2 position, vec4 color);
 	void initBall(float radius, vec2 position, vec4 color, vec2 direction, float maxSpeed, float minSpeed);
@@ -83,6 +90,8 @@ public:
 	void drawLevel(void);
 	void drawScore(void);
 	void drawLives(void);
+	void drawVictoryScreen(void);
+	void drawDefeatScreen(void);
 
 	void displayStats(void);
 

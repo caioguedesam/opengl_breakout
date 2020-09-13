@@ -18,6 +18,7 @@ public:
 	void drawBricks(void);
 	void reset(void);
 
+	bool isAnyBrickActive(void);
 	void deleteAllBricks(void);
 
 	void displayBrickStats(void);

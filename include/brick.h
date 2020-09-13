@@ -13,6 +13,7 @@ public:
 	vec2 size;
 	vec4 color;
 	int hp;
+	int originalHp;
 	unsigned int lastHitTime;
 
 	Brick();

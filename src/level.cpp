@@ -42,7 +42,19 @@ void Level::reset(void) {
 	std::vector<Brick*>::iterator it;
 	for (it = bricks.begin(); it != bricks.end(); it++) {
 		(*it)->active = true;
+		(*it)->hp = (*it)->originalHp;
+		(*it)->setColor();
 	}
+}
+
+bool Level::isAnyBrickActive(void) {
+	std::vector<Brick*>::iterator it;
+	for (it = bricks.begin(); it != bricks.end(); it++) {
+		if ((*it)->active) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Level::deleteAllBricks(void) {
