@@ -124,7 +124,7 @@ void Game::update(void) {
 		checkGameFinish();
 
 		// Move paddle along mouse position
-		paddle.movePaddle(mousePosition.x, mousePosition.y);
+		paddle.movePaddle(mousePosition);
 		ball.moveBall();
 
 		if (pauseAfterUpdate)
@@ -316,9 +316,10 @@ void Game::displayStats(void) {
 	std::cout << "Paddle:" << std::endl;
 	std::cout << "	Position: (" << paddle.position.x << ", " << paddle.position.y << ")" << std::endl;
 	std::cout << "Ball: " << std::endl;
+	std::cout << "	Active: " << ((ball.active == 0) ? "NO" : "YES") << std::endl;
 	std::cout << "	Position: (" << ball.position.x << ", " << ball.position.y << ")" << std::endl;
 	std::cout << "	Move Direction: (" << ball.moveDirection.x << ", " << ball.moveDirection.y << ")" << std::endl;
-	std::cout << "	Move Speed: " << ball.moveSpeed << std::endl;
+	std::cout << "	Move Speed: " << ((ball.active == 0) ? 0.0 : ball.moveSpeed) << std::endl;
 	std::cout << "Bricks remaining: " << std::endl;
 	level.displayBrickStats();
 }
