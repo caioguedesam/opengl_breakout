@@ -61,12 +61,28 @@ void Game::mouseMove(int x, int y) {
 }
 
 void Game::mouseInput(int button, int buttonState, int x, int y) {
-	// On left click
-	if (button == GLUT_LEFT_BUTTON && buttonState == GLUT_DOWN) {
-		if (state == GameState::GAME_PAUSED)
-			play();
-		else
-			pause();
+	switch (button) {
+	case GLUT_LEFT_BUTTON:
+		// On mouse left click
+		if (buttonState == GLUT_DOWN) {
+			if (state == GameState::GAME_PAUSED)
+				play();
+			else
+				pause();
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void Game::keyboardInput(unsigned char key, int x, int y) {
+	switch (key) {
+	case 'q':
+		quit();
+		break;
+	default:
+		break;
 	}
 }
 
@@ -126,6 +142,11 @@ void Game::pause(void) {
 void Game::play(void) {
 	state = GameState::GAME_PLAYING;
 	lastTime = glutGet(GLUT_ELAPSED_TIME);
+}
+
+void Game::quit(void) {
+	level.deleteAllBricks();
+	exit(EXIT_SUCCESS);
 }
 
 void Game::initPaddle(vec2 size, vec2 position, vec4 color) {

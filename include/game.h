@@ -6,6 +6,7 @@
 #include "../include/vec.h"
 #include "../include/deltatime.h"
 #include "../include/useful_math.h"
+#include <cstdlib>
 #include <math.h>
 #include <vector>
 #include <iostream>
@@ -43,11 +44,13 @@ public:
 	void reshape(int w, int h);
 	void mouseMove(int x, int y);
 	void mouseInput(int button, int buttonState, int x, int y);
+	void keyboardInput(unsigned char key, int x, int y);
 	void draw(void);
 	void update(void);
 	void idle(void);
 	void pause(void);
 	void play(void);
+	void quit(void);
 
 	void updateDeltaTime(void);
 	void updateCollisions(void);

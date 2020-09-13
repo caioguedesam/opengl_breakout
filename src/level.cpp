@@ -38,7 +38,7 @@ void Level::drawBricks(void) {
 }
 
 void Level::removeInactiveBricks(void) {
-	std::vector<Brick*>::iterator it;
+	/*std::vector<Brick*>::iterator it;
 	for (it = bricks.begin(); it != bricks.end(); ) {
 		if (!(*it)->active) {
 			delete (*it);
@@ -46,5 +46,13 @@ void Level::removeInactiveBricks(void) {
 		}
 		else
 			it++;
+	}*/
+}
+
+void Level::deleteAllBricks(void) {
+	std::vector<Brick*>::iterator it;
+	for (it = bricks.begin(); it != bricks.end(); ) {
+		delete (*it);
+		it = bricks.erase(it);
 	}
 }

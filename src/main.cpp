@@ -18,6 +18,10 @@ void mouseInput(int button, int buttonState, int x, int y) {
 	breakout.mouseInput(button, buttonState, x, y);
 }
 
+void keyboardInput(unsigned char key, int x, int y) {
+	breakout.keyboardInput(key, x, y);
+}
+
 void idle(void) {
 	breakout.idle();
 }
@@ -36,6 +40,7 @@ int main(int argc, char** argv) {
 	glutReshapeFunc(reshape);
 	glutPassiveMotionFunc(mouseMove);
 	glutMouseFunc(mouseInput);
+	glutKeyboardFunc(keyboardInput);
 	glutIdleFunc(idle);
 
 	glutMainLoop();
