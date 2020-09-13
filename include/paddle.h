@@ -3,7 +3,7 @@
 
 class Paddle {
 public:
-	vec2 center;
+	vec2 position;
 	vec2 size;
 	vec4 color;
 
@@ -11,4 +11,9 @@ public:
 	GLfloat moveSpeed;
 
 	Paddle();
+	Paddle(vec2 size, vec2 position = vec2(0.0, 0.0), vec4 color = vec4(1.0, 1.0, 1.0, 1.0), float moveSpeed = 0.0f);
+
+	void movePaddle(int x, int y);
+
+	void draw(void);
 };
