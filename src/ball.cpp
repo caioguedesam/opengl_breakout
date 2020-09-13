@@ -111,16 +111,15 @@ float Ball::collisionAngle(vec2 collisionDirection) {
 
 void Ball::checkPaddleCollision(Paddle paddle) {
 	if (collidesWithPaddle(paddle)) {
-		// REVISE THIS LATER: how does changing direction when hitting paddle works.
+		// Get vector from center of paddle to center of ball
 		vec2 collisionDir = collisionDirectionWithPaddle(paddle);
-		moveDirection = vec2(-collisionDir.x, collisionDir.y);
-
-		// Change speed based on angle hit
-		float angle = collisionAngle(moveDirection);
-		if (abs(angle) <= maxAngle) {
-			moveSpeed = minSpeed + (maxSpeed - minSpeed) * (abs(angle) / maxAngle);
-			moveSpeed = clampMax(moveSpeed, maxSpeed);
-		}
+		// Calculate angle from up vector based on collision direction
+		float angle = clamp(collisionAngle(collisionDir), -maxAngle, maxAngle);
+		// Mirror move direction to appropriate angle, up to max angle
+		moveDirection = (collisionDir.x < 0) ? vec2(0.0, 1.0).rotate(angle) : vec2(0.0, 1.0).rotate(-angle);
+		// Increase/decrease move speed based on angle
+		moveSpeed = minSpeed + (maxSpeed - minSpeed) * (abs(angle) / maxAngle);
+		moveSpeed = clampMax(moveSpeed, maxSpeed);
 	}
 }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <GL/freeglut.h>
 #include <math.h>
+#include "../include/useful_math.h"
 
 class vec2 {
 public:
@@ -16,6 +17,8 @@ public:
 
 	float magnitude();
 	vec2 normalize();
+
+	vec2 rotate(float angle);
 };
 
 class vec3 {
