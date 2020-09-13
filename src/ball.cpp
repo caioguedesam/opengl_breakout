@@ -110,10 +110,6 @@ float Ball::collisionAngle(vec2 collisionDirection) {
 }
 
 void Ball::checkPaddleCollision(Paddle paddle) {
-	if (isBelowPaddle(paddle)) {
-		destroyBall();
-	}
-
 	if (collidesWithPaddle(paddle)) {
 		// REVISE THIS LATER: how does changing direction when hitting paddle works.
 		vec2 collisionDir = collisionDirectionWithPaddle(paddle);
@@ -138,6 +134,14 @@ bool Ball::checkBrickCollision(Level level) {
 	return false;
 }
 
+bool Ball::checkDeath(Paddle paddle) {
+	if (isBelowPaddle(paddle)) {
+		destroyBall();
+		return true;
+	}
+	return false;
+}
+
 void Ball::draw(void) {
 	if (active) {
 		// Setting the ball color
@@ -154,4 +158,20 @@ void Ball::draw(void) {
 		}
 		glEnd();
 	}
+}
+
+void Ball::drawOnPosition(vec2 drawPos) {
+	// Setting the ball color
+	glColor3f(color.x, color.y, color.z);
+	// Calculating vertex positions and drawing paddle
+	glBegin(GL_POLYGON);
+	// Using 50 segments, maybe change this later as ball attribute
+	for (int i = 0; i < 50.0; i++) {
+		// Calculates angle as (i/segments) percent of 2pi rad (360º)
+		float theta = 2.0f * PI * (float)i / 50.0f;
+		float x = radius * cos(theta);
+		float y = radius * sin(theta);
+		glVertex2f(drawPos.x + x, drawPos.y + y);
+	}
+	glEnd();
 }

@@ -25,6 +25,12 @@ public:
 	GameState state;
 	unsigned int score;
 	vec2 scorePosition;
+	
+	unsigned int lives;
+	vec2 livesPosition;
+	bool isDead;
+	vec2 respawnOffset;
+	vec2 respawnDirection;
 
 	Paddle paddle;
 	vec2 paddleOrigin;
@@ -55,11 +61,13 @@ public:
 	void idle(void);
 
 	void scorePoint(void);
+	void loseLife(void);
 	
 	void pause(void);
 	void play(void);
 	void quit(void);
 	void reset(void);
+	void respawn(void);
 
 	void updateDeltaTime(void);
 	void updateCollisions(void);
@@ -73,6 +81,7 @@ public:
 	void drawBall(void);
 	void drawLevel(void);
 	void drawScore(void);
+	void drawLives(void);
 
 	Game();
 };

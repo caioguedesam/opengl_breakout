@@ -4,6 +4,12 @@ Game::Game() {
 	state = GameState::GAME_PAUSED;
 	score = 0;
 	scorePosition = vec2(-350.0, -250.0);
+	
+	lives = 3;
+	livesPosition = vec2(280.0, -250.0);
+	isDead = false;
+	respawnOffset = vec2(0.0, 12.0);
+	respawnDirection = vec2(0.0, 1.0);
 
 	lastTime = 0;
 	deltaTime = 0.0;
@@ -16,7 +22,7 @@ Game::Game() {
 	paddleSize = vec2(30, 5);
 	paddleColor = vec4(0.6, 0.6, 0.6, 1.0);
 
-	ballOrigin = vec2(0, 150);
+	ballOrigin = vec2(0, -100);
 	ballRadius = 5.0;
 	ballColor = vec4(1.0, 1.0, 1.0, 1.0);
 	ballDirection = vec2(0.0, -1.0);
@@ -86,6 +92,10 @@ void Game::keyboardInput(unsigned char key, int x, int y) {
 	case 'r':
 		reset();
 		break;
+	case ' ':
+		if(state == GameState::GAME_PLAYING)
+			respawn();
+		break;
 	default:
 		break;
 	}
@@ -122,6 +132,8 @@ void Game::updateDeltaTime(void) {
 void Game::updateCollisions(void) {
 	ball.clampBallToScreenBounds(displayWidth, displayHeight);
 	ball.checkPaddleCollision(paddle);
+	if (!isDead && ball.checkDeath(paddle))
+		loseLife();
 	if (ball.checkBrickCollision(level))
 		scorePoint();
 }
@@ -135,7 +147,12 @@ void Game::idle(void) {
 
 void Game::scorePoint(void) {
 	score++;
-	std::cout << score << std::endl;
+}
+
+void Game::loseLife(void) {
+	lives--;
+	lives = clampMin(lives, 0);
+	isDead = true;
 }
 
 void Game::pause(void) {
@@ -159,6 +176,13 @@ void Game::reset(void) {
 	pause();
 }
 
+void Game::respawn(void) {
+	if (isDead && lives > 0) {
+		isDead = false;
+		ball.reset(paddle.position + respawnOffset, respawnDirection);
+	}
+}
+
 void Game::initPaddle(vec2 size, vec2 position, vec4 color) {
 	paddle = Paddle(size, position, color);
 }
@@ -173,6 +197,7 @@ void Game::initLevel(std::vector<std::vector<int>> brickMatrix, vec2 firstPositi
 
 void Game::draw(void) {
 	drawScore();
+	drawLives();
 	drawPaddle();
 	drawBall();
 	drawLevel();
@@ -183,7 +208,10 @@ void Game::drawPaddle(void) {
 }
 
 void Game::drawBall(void) {
-	ball.draw();
+	if (isDead && lives > 0)
+		ball.drawOnPosition(paddle.position + respawnOffset);
+	else
+		ball.draw();
 }
 
 void Game::drawLevel(void) {
@@ -196,4 +224,12 @@ void Game::drawScore(void) {
 	scoreString = "SCORE: " + scoreString;
 	//renderStrokeString(scorePosition.x, scorePosition.y, GLUT_STROKE_MONO_ROMAN, color, scoreString.c_str(), 0.1);
 	renderBitmapString(scorePosition.x, scorePosition.y, GLUT_BITMAP_HELVETICA_18, color, scoreString.c_str());
+}
+
+void Game::drawLives(void) {
+	vec4 color = vec4(1.0, 1.0, 1.0, 1.0);
+	std::string livesString = std::to_string(lives);
+	livesString = "LIVES: " + livesString;
+	//renderStrokeString(scorePosition.x, scorePosition.y, GLUT_STROKE_MONO_ROMAN, color, scoreString.c_str(), 0.1);
+	renderBitmapString(livesPosition.x, livesPosition.y, GLUT_BITMAP_HELVETICA_18, color, livesString.c_str());
 }

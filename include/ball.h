@@ -42,6 +42,8 @@ public:
 
 	void checkPaddleCollision(Paddle paddle);
 	bool checkBrickCollision(Level level);
+	bool checkDeath(Paddle paddle);
 
 	void draw(void);
+	void drawOnPosition(vec2 drawPos);
 };
