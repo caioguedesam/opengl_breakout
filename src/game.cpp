@@ -1,6 +1,8 @@
 #include "../include/game.h"
 
 Game::Game() {
+	state = GameState::GAME_PAUSED;
+
 	lastTime = 0;
 	deltaTime = 0.0;
 
@@ -58,15 +60,27 @@ void Game::mouseMove(int x, int y) {
 	mousePosition.y = -(y - displayHeight / 2);
 }
 
+void Game::mouseInput(int button, int buttonState, int x, int y) {
+	// On left click
+	if (button == GLUT_LEFT_BUTTON && buttonState == GLUT_DOWN) {
+		if (state == GameState::GAME_PAUSED)
+			play();
+		else
+			pause();
+	}
+}
+
 void Game::update(void) {
-	updateDeltaTime();
-	updateCollisions();
+	if (state == GameState::GAME_PLAYING) {
+		updateDeltaTime();
+		updateCollisions();
 
-	// Move paddle along mouse position
-	paddle.movePaddle(mousePosition.x, mousePosition.y);
-	ball.moveBall();
+		// Move paddle along mouse position
+		paddle.movePaddle(mousePosition.x, mousePosition.y);
+		ball.moveBall();
 
-	level.removeInactiveBricks();
+		level.removeInactiveBricks();
+	}	
 }
 
 void Game::updateDeltaTime(void) {
@@ -77,6 +91,10 @@ void Game::updateDeltaTime(void) {
 	}
 	if (deltaTime < 0.001) {
 		// Clamping deltaTime for precision reasons.
+		deltaTime = 0.0005;
+	}
+	else if (deltaTime > 0.5) {
+		// If game is paused, prevent deltaTime from overshooting.
 		deltaTime = 0.0005;
 	}
 	lastTime = timeElapsed;
@@ -99,6 +117,15 @@ void Game::idle(void) {
 	update();
 	// Refresh display every frame
 	glutPostRedisplay();
+}
+
+void Game::pause(void) {
+	state = GameState::GAME_PAUSED;
+}
+
+void Game::play(void) {
+	state = GameState::GAME_PLAYING;
+	lastTime = glutGet(GLUT_ELAPSED_TIME);
 }
 
 void Game::initPaddle(vec2 size, vec2 position, vec4 color) {

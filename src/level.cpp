@@ -22,7 +22,6 @@ Level::Level(std::vector<std::vector<int>> brickMatrix, vec2 firstPosition, vec2
 				vec2 pos = firstPosition + vec2(j * (brickSize.x * 2 + padding.x), i * (-brickSize.y * 2 - padding.y));
 				Brick* brick = new Brick(brickSize, pos, brickMatrix[i][j]);
 				bricks.push_back(brick);
-				std::cout << "Brick at pos: " << pos.x << ", " << pos.y << std::endl;
 			}
 		}
 	}

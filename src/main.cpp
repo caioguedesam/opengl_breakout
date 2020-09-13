@@ -14,6 +14,10 @@ void mouseMove(int x, int y) {
 	breakout.mouseMove(x, y);
 }
 
+void mouseInput(int button, int buttonState, int x, int y) {
+	breakout.mouseInput(button, buttonState, x, y);
+}
+
 void idle(void) {
 	breakout.idle();
 }
@@ -31,6 +35,7 @@ int main(int argc, char** argv) {
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
 	glutPassiveMotionFunc(mouseMove);
+	glutMouseFunc(mouseInput);
 	glutIdleFunc(idle);
 
 	glutMainLoop();
