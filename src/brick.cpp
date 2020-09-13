@@ -31,7 +31,7 @@ Brick::Brick(vec2 size, vec2 position, int hp) {
 // Change this later to get bricks that resist multiple hits
 void Brick::hitBrick(void) {
 	unsigned int hitTime = glutGet(GLUT_ELAPSED_TIME);
-	if (hitTime - lastHitTime > 500) {
+	if (hitTime - lastHitTime > 100) {
 		hp--;
 		std::cout << hp << std::endl;
 		setColor();

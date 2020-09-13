@@ -79,7 +79,7 @@ void Game::update(void) {
 		paddle.movePaddle(mousePosition.x, mousePosition.y);
 		ball.moveBall();
 
-		level.removeInactiveBricks();
+		//level.removeInactiveBricks();
 	}	
 }
 
