@@ -27,7 +27,8 @@ public:
 
 	void moveBall();
 	void destroyBall();
-	void clampBallToScreenBounds(float width, float height);
+	void reset(vec2 resetPos, vec2 resetDir);
+	bool clampBallToScreenBounds(float width, float height);
 
 	bool collidesWithRect(float xmin, float ymin, float xmax, float ymax);
 	bool collidesWithPaddle(Paddle paddle);
@@ -40,7 +41,9 @@ public:
 	float collisionAngle(vec2 collisionDirection);
 
 	void checkPaddleCollision(Paddle paddle);
-	void checkBrickCollision(Level level);
+	int checkBrickCollision(Level level);
+	bool checkDeath(Paddle paddle);
 
 	void draw(void);
+	void drawOnPosition(vec2 drawPos);
 };

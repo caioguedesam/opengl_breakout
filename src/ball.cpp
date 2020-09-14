@@ -40,11 +40,24 @@ void Ball::destroyBall() {
 	active = false;
 }
 
-void Ball::clampBallToScreenBounds(float width, float height) {
-	if (position.x < (-width) / 2.0 || position.x > width / 2.0)
+void Ball::reset(vec2 resetPos, vec2 resetDir) {
+	active = true;
+	position = resetPos;
+	moveDirection = resetDir;
+	moveSpeed = minSpeed;
+}
+
+bool Ball::clampBallToScreenBounds(float width, float height) {
+	bool clamped = false;
+	if (position.x < (-width) / 2.0 || position.x > width / 2.0) {
 		moveDirection.x = -moveDirection.x;
-	if (position.y < (-height) / 2.0 || position.y > height / 2.0)
+		clamped = true;
+	}
+	if (position.y < (-height) / 2.0 || position.y > height / 2.0) {
 		moveDirection.y = -moveDirection.y;
+		clamped = true;
+	}
+	return clamped;
 }
 
 bool Ball::collidesWithRect(float xmin, float ymin, float xmax, float ymax) {
@@ -103,31 +116,36 @@ float Ball::collisionAngle(vec2 collisionDirection) {
 }
 
 void Ball::checkPaddleCollision(Paddle paddle) {
-	if (isBelowPaddle(paddle)) {
-		destroyBall();
-	}
-
 	if (collidesWithPaddle(paddle)) {
-		// REVISE THIS LATER: how does changing direction when hitting paddle works.
+		// Get vector from center of paddle to center of ball
 		vec2 collisionDir = collisionDirectionWithPaddle(paddle);
-		moveDirection = vec2(-collisionDir.x, collisionDir.y);
-
-		// Change speed based on angle hit
-		float angle = collisionAngle(moveDirection);
-		if (abs(angle) <= maxAngle) {
-			moveSpeed = minSpeed + (maxSpeed - minSpeed) * (abs(angle) / maxAngle);
-			moveSpeed = clampMax(moveSpeed, maxSpeed);
-		}
+		// Calculate angle from up vector based on collision direction
+		float angle = clamp(collisionAngle(collisionDir), -maxAngle, maxAngle);
+		// Mirror move direction to appropriate angle, up to max angle
+		moveDirection = (collisionDir.x < 0) ? vec2(0.0, 1.0).rotate(angle) : vec2(0.0, 1.0).rotate(-angle);
+		// Increase/decrease move speed based on angle
+		moveSpeed = minSpeed + (maxSpeed - minSpeed) * (abs(angle) / maxAngle);
+		moveSpeed = clampMax(moveSpeed, maxSpeed);
 	}
 }
 
-void Ball::checkBrickCollision(Level level) {
+int Ball::checkBrickCollision(Level level) {
 	for (unsigned int i = 0; i < level.bricks.size(); i++) {
 		if (level.bricks[i]->active && collidesWithBrick(*level.bricks[i])) {
 			moveDirection = collisionDirectionWithBrick(*level.bricks[i]);
 			level.bricks[i]->hitBrick();
+			return static_cast<int>(level.bricks[i]->type);
 		}
 	}
+	return 0;
+}
+
+bool Ball::checkDeath(Paddle paddle) {
+	if (isBelowPaddle(paddle)) {
+		destroyBall();
+		return true;
+	}
+	return false;
 }
 
 void Ball::draw(void) {
@@ -146,4 +164,20 @@ void Ball::draw(void) {
 		}
 		glEnd();
 	}
+}
+
+void Ball::drawOnPosition(vec2 drawPos) {
+	// Setting the ball color
+	glColor3f(color.x, color.y, color.z);
+	// Calculating vertex positions and drawing paddle
+	glBegin(GL_POLYGON);
+	// Using 50 segments, maybe change this later as ball attribute
+	for (int i = 0; i < 50.0; i++) {
+		// Calculates angle as (i/segments) percent of 2pi rad (360º)
+		float theta = 2.0f * PI * (float)i / 50.0f;
+		float x = radius * cos(theta);
+		float y = radius * sin(theta);
+		glVertex2f(drawPos.x + x, drawPos.y + y);
+	}
+	glEnd();
 }

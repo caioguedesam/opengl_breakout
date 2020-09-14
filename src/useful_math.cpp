@@ -23,3 +23,14 @@ float clamp(const float& value, const float& min, const float& max) {
 	result = clampMax(result, max);
 	return result;
 }
+
+float lerp(const float& start, const float& end, const float& t) {
+	float tClamped = clamp(t, 0, 1);
+	return start * (1 - tClamped) + end * tClamped;
+}
+
+float easeOutExpo(const float& start, const float& end, const float& t) {
+	float tClamped = clamp(t, 0, 1);
+	float dist = end - start;
+	return dist * (-pow(2.0, -10.0 * t) + 1.0) + start;
+}

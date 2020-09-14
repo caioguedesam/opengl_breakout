@@ -19,6 +19,15 @@ vec2 vec2::normalize() {
 	return vec2(x / magnitude, y / magnitude);
 }
 
+// rotates counter-clockwise
+vec2 vec2::rotate(float angle) {
+	float rad = angle * (PI / 180.0f);
+	float cosine = cos(rad);
+	float sine = sin(rad);
+
+	return vec2(cosine * x - sine * y, sine * x + cosine * y);
+}
+
 vec2 vec2::operator+(const vec2& rhs) {
 	vec2 result = vec2(this->x + rhs.x, this->y + rhs.y);
 	return result;

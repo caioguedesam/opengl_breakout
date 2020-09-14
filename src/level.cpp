@@ -17,7 +17,13 @@ Level::Level(std::vector<std::vector<int>> brickMatrix, vec2 firstPosition, vec2
 
 	for (unsigned int i = 0; i < brickMatrix.size(); i++) {
 		for (unsigned int j = 0; j < brickMatrix[i].size(); j++) {
-			// Create brick on position if matrix content is not 0 or lower
+			// Create special bricks for values less than 0
+			if (brickMatrix[i][j] < 0) {
+				vec2 pos = firstPosition + vec2(j * (brickSize.x * 2 + padding.x), i * (-brickSize.y * 2 - padding.y));
+				Brick* brick = new Brick(brickSize, pos, 1, static_cast<BrickType>(brickMatrix[i][j]));
+				bricks.push_back(brick);
+			}
+			// Create regular bricks for values greater than 0
 			if (brickMatrix[i][j] > 0) {
 				vec2 pos = firstPosition + vec2(j * (brickSize.x * 2 + padding.x), i * (-brickSize.y * 2 - padding.y));
 				Brick* brick = new Brick(brickSize, pos, brickMatrix[i][j]);
@@ -37,14 +43,41 @@ void Level::drawBricks(void) {
 	}
 }
 
-void Level::removeInactiveBricks(void) {
+void Level::reset(void) {
+	// Reactivates all bricks in brick list
+	std::vector<Brick*>::iterator it;
+	for (it = bricks.begin(); it != bricks.end(); it++) {
+		(*it)->active = true;
+		(*it)->hp = (*it)->originalHp;
+		(*it)->setColor();
+	}
+}
+
+bool Level::isAnyBrickActive(void) {
+	std::vector<Brick*>::iterator it;
+	for (it = bricks.begin(); it != bricks.end(); it++) {
+		if ((*it)->active) {
+			return true;
+		}
+	}
+	return false;
+}
+
+void Level::deleteAllBricks(void) {
 	std::vector<Brick*>::iterator it;
 	for (it = bricks.begin(); it != bricks.end(); ) {
-		if (!(*it)->active) {
-			delete (*it);
-			it = bricks.erase(it);
+		delete (*it);
+		it = bricks.erase(it);
+	}
+}
+
+void Level::displayBrickStats(void) {
+	std::vector<Brick*>::iterator it;
+	for (it = bricks.begin(); it != bricks.end(); it++) {
+		if ((*it)->active) {
+			int index = it - bricks.begin();
+			std::cout << "	Brick " << index << " (" << (*it)->hp << "HP), at position (" 
+				<< (*it)->position.x << ", " << (*it)->position.y << ")" << std::endl;
 		}
-		else
-			it++;
 	}
 }

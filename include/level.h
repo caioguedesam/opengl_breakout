@@ -16,5 +16,10 @@ public:
 
 	void draw(void);
 	void drawBricks(void);
-	void removeInactiveBricks(void);
+	void reset(void);
+
+	bool isAnyBrickActive(void);
+	void deleteAllBricks(void);
+
+	void displayBrickStats(void);
 };

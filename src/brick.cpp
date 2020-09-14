@@ -1,11 +1,16 @@
 #include "../include/brick.h"
 
-std::vector<vec4> brickColors = {
-	vec4(0.333f, 0.866f, 0.447f, 1.0f),
-	vec4(0.333f, 0.866f, 0.713f, 1.0f),
-	vec4(0.333f, 0.803f, 0.866f, 1.0f),
-	vec4(0.125f, 0.376f, 0.796f, 1.0f),
-	vec4(0.247f, 0.125f, 0.796f, 1.0f),
+std::vector<vec4> normalBrickColors = {
+	vec4(0, 0.976, 0.960, 1.0f),
+	vec4(0, 0.823, 1, 1.0f),
+	vec4(0, 0.623, 1, 1.0f),
+	vec4(0, 0.470, 1, 1.0f),
+	vec4(0, 0.317, 1, 1.0f),
+};
+
+std::vector<vec4> specialBrickColors = {
+	vec4(0, 1, 0.388, 1.0f),
+	vec4(1, 0, 0.211, 1.0f)
 };
 
 Brick::Brick() {
@@ -14,32 +19,36 @@ Brick::Brick() {
 	this->position = vec2();
 	this->size = vec2();
 	this->color = vec4();
+	this->type = BrickType::BRICK_NORMAL;
+	this->originalHp = 1;
 	this->hp = 1;
 	this->lastHitTime = 0;
 }
 
-Brick::Brick(vec2 size, vec2 position, int hp) {
+Brick::Brick(vec2 size, vec2 position, int hp, BrickType type) {
 	this->active = true;
 	
 	this->position = position;
 	this->size = size;
-	this->hp = hp;
+	this->type = type;
+	this->originalHp = hp;
+	this->hp = originalHp;
 	this->lastHitTime = 0;
 	setColor();
 }
 
-// Change this later to get bricks that resist multiple hits
-void Brick::hitBrick(void) {
+bool Brick::hitBrick(void) {
 	unsigned int hitTime = glutGet(GLUT_ELAPSED_TIME);
-	if (hitTime - lastHitTime > 500) {
+	if (hitTime - lastHitTime > 50) {
 		hp--;
-		std::cout << hp << std::endl;
 		setColor();
 		if (hp <= 0)
 			destroyBrick();
 
 		lastHitTime = hitTime;
+		return true;
 	}
+	return false;
 }
 
 void Brick::destroyBrick(void) {
@@ -62,12 +71,22 @@ void Brick::draw(void) {
 
 // Sets color value based on hp value
 void Brick::setColor(void) {
-	if (hp <= 0)
-		color = brickColors[0];
-	else if (hp > brickColors.size())
-		color = brickColors.back();
-	else {
-		unsigned int index = hp - 1;
-		color = brickColors[index];
+	switch (type) {
+	case BrickType::BRICK_BIG_PADDLE:
+		color = specialBrickColors[0];
+		break;
+	case BrickType::BRICK_SMALL_PADDLE:
+		color = specialBrickColors[1];
+		break;
+	default:
+		if (hp <= 0)
+			color = normalBrickColors[0];
+		else if (hp > normalBrickColors.size())
+			color = normalBrickColors.back();
+		else {
+			unsigned int index = hp - 1;
+			color = normalBrickColors[index];
+		}
+		break;
 	}
 }
