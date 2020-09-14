@@ -129,14 +129,15 @@ void Ball::checkPaddleCollision(Paddle paddle) {
 	}
 }
 
-bool Ball::checkBrickCollision(Level level) {
+int Ball::checkBrickCollision(Level level) {
 	for (unsigned int i = 0; i < level.bricks.size(); i++) {
 		if (level.bricks[i]->active && collidesWithBrick(*level.bricks[i])) {
 			moveDirection = collisionDirectionWithBrick(*level.bricks[i]);
-			return level.bricks[i]->hitBrick();
+			level.bricks[i]->hitBrick();
+			return static_cast<int>(level.bricks[i]->type);
 		}
 	}
-	return false;
+	return 0;
 }
 
 bool Ball::checkDeath(Paddle paddle) {

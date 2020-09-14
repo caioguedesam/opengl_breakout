@@ -77,6 +77,7 @@ public:
 	void shakeCamera(float amount, float duration);
 	void scorePoint(void);
 	void increaseBallSpeed(void);
+	void changePaddleSize(int brickValue);
 	void loseLife(void);
 	void win(void);
 	void lose(void);

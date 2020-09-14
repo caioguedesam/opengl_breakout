@@ -42,9 +42,12 @@ Game::Game() {
 	ballFinalSpeed = 500.0;
 
 	brickMatrix = {
-		{4,4,4,4,4,4,4,4,4,4,4,4},
+		{4,4,4,-1,4,4,4,4,-1,4,4,4},
+		{3,-2,3,3,3,3,3,3,3,3,-2,3},
 		{3,3,3,3,3,3,3,3,3,3,3,3},
-		{2,2,2,2,2,2,2,2,2,2,2,2},
+		{2,2,2,-1,2,2,2,2,-1,2,2,2},
+		{2,-2,2,2,2,2,2,2,2,2,-2,2},
+		{1,1,1,1,1,1,1,1,1,1,1,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 	firstBrickPos = vec2(-357.0, 280.0);
@@ -165,9 +168,12 @@ void Game::updateCollisions(void) {
 	ball.checkPaddleCollision(paddle);
 	if (!isDead && ball.checkDeath(paddle))
 		loseLife();
-	if (ball.checkBrickCollision(level)) {
+
+	int brickColl = ball.checkBrickCollision(level);
+	if (brickColl != 0) {
 		scorePoint();
 		increaseBallSpeed();
+		changePaddleSize(brickColl);
 		shakeCamera(brickShakeAmount, brickShakeTime);
 	}
 }
@@ -201,6 +207,15 @@ void Game::increaseBallSpeed(void) {
 		float t = (float)score / (float)scoreForMaxSpeed;
 		ball.minSpeed = lerp(ballMinSpeed, ballFinalSpeed, t);
 		ball.maxSpeed = lerp(ballMaxSpeed, ballFinalSpeed, t);
+	}
+}
+
+void Game::changePaddleSize(int brickValue) {
+	if (brickValue == -1) {
+		paddle.size.x += (paddleSize.x / 5);
+	}
+	else if (brickValue == -2) {
+		paddle.size.x -= (paddleSize.x / 5);
 	}
 }
 

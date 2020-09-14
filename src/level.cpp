@@ -17,7 +17,13 @@ Level::Level(std::vector<std::vector<int>> brickMatrix, vec2 firstPosition, vec2
 
 	for (unsigned int i = 0; i < brickMatrix.size(); i++) {
 		for (unsigned int j = 0; j < brickMatrix[i].size(); j++) {
-			// Create brick on position if matrix content is not 0 or lower
+			// Create special bricks for values less than 0
+			if (brickMatrix[i][j] < 0) {
+				vec2 pos = firstPosition + vec2(j * (brickSize.x * 2 + padding.x), i * (-brickSize.y * 2 - padding.y));
+				Brick* brick = new Brick(brickSize, pos, 1, static_cast<BrickType>(brickMatrix[i][j]));
+				bricks.push_back(brick);
+			}
+			// Create regular bricks for values greater than 0
 			if (brickMatrix[i][j] > 0) {
 				vec2 pos = firstPosition + vec2(j * (brickSize.x * 2 + padding.x), i * (-brickSize.y * 2 - padding.y));
 				Brick* brick = new Brick(brickSize, pos, brickMatrix[i][j]);
