@@ -7,7 +7,9 @@
 #include "../include/deltatime.h"
 #include "../include/useful_math.h"
 #include "../include/text_render.h"
+#include "../include/camera_shake.h"
 #include <cstdlib>
+#include <time.h>
 #include <math.h>
 #include <vector>
 #include <string>
@@ -22,6 +24,12 @@ public:
 	const char* gameTitle = "Breakout!";
 	GLint displayWidth, displayHeight;
 	vec2 mousePosition;
+
+	CameraShake shake;
+	float brickShakeTime;
+	float brickShakeAmount;
+	float boundsShakeTime;
+	float boundsShakeAmount;
 
 	GameState state;
 	FinishState finishState;
@@ -65,6 +73,7 @@ public:
 	void update(void);
 	void idle(void);
 
+	void shakeCamera(float amount, float duration);
 	void scorePoint(void);
 	void loseLife(void);
 	void win(void);

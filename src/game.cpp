@@ -5,6 +5,12 @@ Game::Game() {
 	finishState = FinishState::GAME_UNFINISHED;
 	pauseAfterUpdate = false;
 
+	shake = CameraShake(10.0);
+	brickShakeTime = 0.5;
+	brickShakeAmount = 0.1;
+	boundsShakeTime = 0.1;
+	boundsShakeAmount = 0.05;
+
 	score = 0;
 	scorePosition = vec2(-350.0, -250.0);
 	
@@ -54,6 +60,7 @@ void Game::init(void) {
 
 void Game::display(void) {
 	glClear(GL_COLOR_BUFFER_BIT);
+	glLoadIdentity();
 	draw();
 	glutSwapBuffers();
 }
@@ -150,12 +157,16 @@ void Game::updateDeltaTime(void) {
 }
 
 void Game::updateCollisions(void) {
-	ball.clampBallToScreenBounds(displayWidth, displayHeight);
+	if (ball.clampBallToScreenBounds(displayWidth, displayHeight)) {
+		shakeCamera(boundsShakeAmount, boundsShakeTime);
+	}
 	ball.checkPaddleCollision(paddle);
 	if (!isDead && ball.checkDeath(paddle))
 		loseLife();
-	if (ball.checkBrickCollision(level))
+	if (ball.checkBrickCollision(level)) {
 		scorePoint();
+		shakeCamera(brickShakeAmount, brickShakeTime);
+	}
 }
 
 void Game::checkGameFinish(void) {
@@ -172,6 +183,10 @@ void Game::idle(void) {
 	update();
 	// Refresh display every frame
 	glutPostRedisplay();
+}
+
+void Game::shakeCamera(float amount, float duration) {
+	shake.start(amount, duration);
 }
 
 void Game::scorePoint(void) {
@@ -244,6 +259,9 @@ void Game::initLevel(std::vector<std::vector<int>> brickMatrix, vec2 firstPositi
 }
 
 void Game::draw(void) {
+	// Always apply camera transformation before the rest
+	shake.applyShake(deltaTime);
+
 	switch (finishState) {
 	case FinishState::GAME_WIN:
 		drawVictoryScreen();

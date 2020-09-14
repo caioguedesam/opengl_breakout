@@ -47,11 +47,17 @@ void Ball::reset(vec2 resetPos, vec2 resetDir) {
 	moveSpeed = minSpeed;
 }
 
-void Ball::clampBallToScreenBounds(float width, float height) {
-	if (position.x < (-width) / 2.0 || position.x > width / 2.0)
+bool Ball::clampBallToScreenBounds(float width, float height) {
+	bool clamped = false;
+	if (position.x < (-width) / 2.0 || position.x > width / 2.0) {
 		moveDirection.x = -moveDirection.x;
-	if (position.y < (-height) / 2.0 || position.y > height / 2.0)
+		clamped = true;
+	}
+	if (position.y < (-height) / 2.0 || position.y > height / 2.0) {
 		moveDirection.y = -moveDirection.y;
+		clamped = true;
+	}
+	return clamped;
 }
 
 bool Ball::collidesWithRect(float xmin, float ymin, float xmax, float ymax) {
