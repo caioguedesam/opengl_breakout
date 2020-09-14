@@ -13,6 +13,7 @@ Game::Game() {
 
 	score = 0;
 	scorePosition = vec2(-350.0, -250.0);
+	scoreForMaxSpeed = 50;
 	
 	startingLives = 3;
 	lives = startingLives;
@@ -38,14 +39,15 @@ Game::Game() {
 	ballDirection = vec2(0.0, -1.0);
 	ballMaxSpeed = 300.0;
 	ballMinSpeed = 150.0;
+	ballFinalSpeed = 500.0;
 
 	brickMatrix = {
-		{4,4,4,4,4,4,4,4,4,4,4},
-		{3,3,3,3,3,3,3,3,3,3,3},
-		{2,2,2,2,2,2,2,2,2,2,2},
-		{1,1,1,1,1,1,1,1,1,1,1}
+		{4,4,4,4,4,4,4,4,4,4,4,4},
+		{3,3,3,3,3,3,3,3,3,3,3,3},
+		{2,2,2,2,2,2,2,2,2,2,2,2},
+		{1,1,1,1,1,1,1,1,1,1,1,1}
 	};
-	firstBrickPos = vec2(-320.0, 280.0);
+	firstBrickPos = vec2(-357.0, 280.0);
 	brickPadding = vec2(5.0, 2.0);
 }
 
@@ -165,6 +167,7 @@ void Game::updateCollisions(void) {
 		loseLife();
 	if (ball.checkBrickCollision(level)) {
 		scorePoint();
+		increaseBallSpeed();
 		shakeCamera(brickShakeAmount, brickShakeTime);
 	}
 }
@@ -191,6 +194,14 @@ void Game::shakeCamera(float amount, float duration) {
 
 void Game::scorePoint(void) {
 	score++;
+}
+
+void Game::increaseBallSpeed(void) {
+	if (score <= scoreForMaxSpeed) {
+		float t = (float)score / (float)scoreForMaxSpeed;
+		ball.minSpeed = lerp(ballMinSpeed, ballFinalSpeed, t);
+		ball.maxSpeed = lerp(ballMaxSpeed, ballFinalSpeed, t);
+	}
 }
 
 void Game::loseLife(void) {

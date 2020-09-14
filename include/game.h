@@ -37,6 +37,7 @@ public:
 
 	unsigned int score;
 	vec2 scorePosition;
+	int scoreForMaxSpeed;
 	
 	unsigned int lives;
 	unsigned int startingLives;
@@ -55,7 +56,7 @@ public:
 	float ballRadius;
 	vec4 ballColor;
 	vec2 ballDirection;
-	float ballMaxSpeed, ballMinSpeed;
+	float ballMaxSpeed, ballMinSpeed, ballFinalSpeed;
 
 	Level level;
 	std::vector<std::vector<int>> brickMatrix;
@@ -75,6 +76,7 @@ public:
 
 	void shakeCamera(float amount, float duration);
 	void scorePoint(void);
+	void increaseBallSpeed(void);
 	void loseLife(void);
 	void win(void);
 	void lose(void);
