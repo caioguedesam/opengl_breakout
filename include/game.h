@@ -66,7 +66,9 @@ public:
 	vec2 firstBrickPos;
 	vec2 brickPadding;
 
+	#ifdef GAME_SOUND
 	AudioSource audio;
+	#endif
 
 	void init(void);
 	void display(void);

@@ -1,3 +1,4 @@
+#ifdef GAME_SOUND
 #include "../include/music.h"
 
 Music::Music() {
@@ -116,3 +117,4 @@ void AudioSource::freeResources(void) {
         (*it).second.free();
     }
 }
+#endif
