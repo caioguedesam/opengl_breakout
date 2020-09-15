@@ -1,5 +1,7 @@
 #pragma once
 #include <GL/freeglut.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include "../include/paddle.h"
 #include "../include/ball.h"
 #include "../include/level.h"
