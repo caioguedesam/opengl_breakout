@@ -3,6 +3,7 @@
 #include <SDL2/SDL_mixer.h>
 
 Game breakout;
+Mix_Music *music = NULL;
 
 void display(void) {
 	breakout.display();
@@ -28,26 +29,24 @@ void idle(void) {
 	breakout.idle();
 }
 
-Mix_Music *music = NULL;
-
-int main(int argc, char** argv) {
+void playMainMusic(void) {
 	if(SDL_Init(SDL_INIT_AUDIO) < 0) {
-		std::cout << "1";
-		return -1;
+		return;
 	}
 	if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
-		std::cout << "2";
-		return -1;
+		return;
 	}
 	music = Mix_LoadMUS("sounds/mitsuo.ogg");
 	if(music == NULL) {
-		std::cout << "3";
-		return -1;
+		return;
 	}
 	if(Mix_PlayMusic(music, -1) == -1) {
-		std::cout << "4";
-		return -1;
+		return;
 	}
+}
+
+int main(int argc, char** argv) {
+	playMainMusic();
 
 	glutInit(&argc, argv);
 
