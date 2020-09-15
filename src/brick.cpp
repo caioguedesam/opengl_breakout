@@ -1,11 +1,10 @@
 #include "../include/brick.h"
 
 std::vector<vec4> normalBrickColors = {
-	vec4(0, 0.976, 0.960, 1.0f),
-	vec4(0, 0.823, 1, 1.0f),
-	vec4(0, 0.623, 1, 1.0f),
-	vec4(0, 0.470, 1, 1.0f),
-	vec4(0, 0.317, 1, 1.0f),
+	vec4(0.023, 0.858, 0.823, 1.0f),
+	vec4(0.023, 0.431, 0.858, 1.0f),
+	vec4(0.4, 0.023, 0.858, 1.0f),
+	vec4(0.858, 0.023, 0.850, 1.0f),
 };
 
 std::vector<vec4> specialBrickColors = {

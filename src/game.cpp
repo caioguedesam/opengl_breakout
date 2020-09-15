@@ -47,7 +47,7 @@ Game::Game() {
 		{3,3,3,3,3,3,3,3,3,3,3,3},
 		{2,2,2,-1,2,2,2,2,-1,2,2,2},
 		{2,-2,2,2,2,2,2,2,2,2,-2,2},
-		{1,1,1,1,1,1,1,1,1,1,1,1},
+		{1,1,1,-1,1,1,1,1,-1,1,1,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 	firstBrickPos = vec2(-357.0, 280.0);
@@ -58,6 +58,11 @@ void Game::init(void) {
 	initPaddle(paddleSize, paddleOrigin, paddleColor);
 	initBall(ballRadius, ballOrigin, ballColor, ballDirection, ballMaxSpeed, ballMinSpeed);
 	initLevel(brickMatrix, firstBrickPos, brickPadding);
+
+	#ifdef GAME_SOUND
+	audio.init();
+	audio.startMusic();
+	#endif
 
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_FLAT);
@@ -164,8 +169,15 @@ void Game::updateDeltaTime(void) {
 void Game::updateCollisions(void) {
 	if (ball.clampBallToScreenBounds(displayWidth, displayHeight)) {
 		shakeCamera(boundsShakeAmount, boundsShakeTime);
+		#ifdef GAME_SOUND
+		audio.playSound('w');
+		#endif
 	}
-	ball.checkPaddleCollision(paddle);
+	if(ball.checkPaddleCollision(paddle)) {
+		#ifdef GAME_SOUND
+		audio.playSound('p');
+		#endif
+	}
 	if (!isDead && ball.checkDeath(paddle))
 		loseLife();
 
@@ -175,6 +187,9 @@ void Game::updateCollisions(void) {
 		increaseBallSpeed();
 		changePaddleSize(brickColl);
 		shakeCamera(brickShakeAmount, brickShakeTime);
+		#ifdef GAME_SOUND
+		audio.playSound('b');
+		#endif
 	}
 }
 
@@ -213,9 +228,18 @@ void Game::increaseBallSpeed(void) {
 void Game::changePaddleSize(int brickValue) {
 	if (brickValue == -1) {
 		paddle.size.x += (paddleSize.x / 5);
+		// Paddle size doesn't reduce more than a fifth of original size
+		if(paddle.size.x < (paddleSize.x / 5))
+			paddle.size.x = paddleSize.x / 5;
+		#ifdef GAME_SOUND
+		audio.playSound('u');
+		#endif
 	}
 	else if (brickValue == -2) {
 		paddle.size.x -= (paddleSize.x / 5);
+		#ifdef GAME_SOUND
+		audio.playSound('d');
+		#endif
 	}
 }
 
@@ -246,6 +270,9 @@ void Game::play(void) {
 
 void Game::quit(void) {
 	level.deleteAllBricks();
+	#ifdef GAME_SOUND
+	audio.freeResources();
+	#endif
 	exit(EXIT_SUCCESS);
 }
 

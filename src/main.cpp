@@ -1,6 +1,7 @@
 #include "../include/game.h"
 
 Game breakout;
+Mix_Music *music = NULL;
 
 void display(void) {
 	breakout.display();

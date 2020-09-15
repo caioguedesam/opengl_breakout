@@ -1,5 +1,7 @@
 #pragma once
 #include <GL/freeglut.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
 #include "../include/paddle.h"
 #include "../include/ball.h"
 #include "../include/level.h"
@@ -8,6 +10,7 @@
 #include "../include/useful_math.h"
 #include "../include/text_render.h"
 #include "../include/camera_shake.h"
+#include "../include/music.h"
 #include <cstdlib>
 #include <time.h>
 #include <math.h>
@@ -62,6 +65,10 @@ public:
 	std::vector<std::vector<int>> brickMatrix;
 	vec2 firstBrickPos;
 	vec2 brickPadding;
+
+	#ifdef GAME_SOUND
+	AudioSource audio;
+	#endif
 
 	void init(void);
 	void display(void);
