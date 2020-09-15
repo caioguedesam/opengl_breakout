@@ -49,9 +49,6 @@ void Sound::load(void) {
         std::cout << "Failed loading sfx" << std::endl;
         return;
     }
-    else {
-        std::cout << "Loaded sfx from path: " << path << std::endl;
-    }
 }
 
 void Sound::play(void) {
