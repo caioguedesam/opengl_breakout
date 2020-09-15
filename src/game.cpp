@@ -228,6 +228,9 @@ void Game::increaseBallSpeed(void) {
 void Game::changePaddleSize(int brickValue) {
 	if (brickValue == -1) {
 		paddle.size.x += (paddleSize.x / 5);
+		// Paddle size doesn't reduce more than a fifth of original size
+		if(paddle.size.x < (paddleSize.x / 5))
+			paddle.size.x = paddleSize.x / 5;
 		#ifdef GAME_SOUND
 		audio.playSound('u');
 		#endif
