@@ -10,6 +10,7 @@
 #include "../include/useful_math.h"
 #include "../include/text_render.h"
 #include "../include/camera_shake.h"
+#include "../include/music.h"
 #include <cstdlib>
 #include <time.h>
 #include <math.h>
@@ -64,6 +65,8 @@ public:
 	std::vector<std::vector<int>> brickMatrix;
 	vec2 firstBrickPos;
 	vec2 brickPadding;
+
+	AudioSource audio;
 
 	void init(void);
 	void display(void);

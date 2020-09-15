@@ -115,7 +115,7 @@ float Ball::collisionAngle(vec2 collisionDirection) {
 	return acos(cosine) * (180 / PI);
 }
 
-void Ball::checkPaddleCollision(Paddle paddle) {
+bool Ball::checkPaddleCollision(Paddle paddle) {
 	if (collidesWithPaddle(paddle)) {
 		// Get vector from center of paddle to center of ball
 		vec2 collisionDir = collisionDirectionWithPaddle(paddle);
@@ -126,7 +126,9 @@ void Ball::checkPaddleCollision(Paddle paddle) {
 		// Increase/decrease move speed based on angle
 		moveSpeed = minSpeed + (maxSpeed - minSpeed) * (abs(angle) / maxAngle);
 		moveSpeed = clampMax(moveSpeed, maxSpeed);
+		return true;
 	}
+	return false;
 }
 
 int Ball::checkBrickCollision(Level level) {
@@ -156,7 +158,7 @@ void Ball::draw(void) {
 		glBegin(GL_POLYGON);
 		// Using 50 segments, maybe change this later as ball attribute
 		for (int i = 0; i < 50.0; i++) {
-			// Calculates angle as (i/segments) percent of 2pi rad (360º)
+			// Calculates angle as (i/segments) percent of 2pi rad (360ï¿½)
 			float theta = 2.0f * PI * (float)i / 50.0f;
 			float x = radius * cos(theta);
 			float y = radius * sin(theta);
@@ -173,7 +175,7 @@ void Ball::drawOnPosition(vec2 drawPos) {
 	glBegin(GL_POLYGON);
 	// Using 50 segments, maybe change this later as ball attribute
 	for (int i = 0; i < 50.0; i++) {
-		// Calculates angle as (i/segments) percent of 2pi rad (360º)
+		// Calculates angle as (i/segments) percent of 2pi rad (360ï¿½)
 		float theta = 2.0f * PI * (float)i / 50.0f;
 		float x = radius * cos(theta);
 		float y = radius * sin(theta);

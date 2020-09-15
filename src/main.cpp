@@ -1,6 +1,4 @@
 #include "../include/game.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_mixer.h>
 
 Game breakout;
 Mix_Music *music = NULL;
@@ -29,25 +27,7 @@ void idle(void) {
 	breakout.idle();
 }
 
-void playMainMusic(void) {
-	if(SDL_Init(SDL_INIT_AUDIO) < 0) {
-		return;
-	}
-	if(Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
-		return;
-	}
-	music = Mix_LoadMUS("sounds/mitsuo.ogg");
-	if(music == NULL) {
-		return;
-	}
-	if(Mix_PlayMusic(music, -1) == -1) {
-		return;
-	}
-}
-
 int main(int argc, char** argv) {
-	playMainMusic();
-
 	glutInit(&argc, argv);
 
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);

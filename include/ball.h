@@ -40,7 +40,7 @@ public:
 	vec2 collisionDirectionWithBrick(Brick brick);
 	float collisionAngle(vec2 collisionDirection);
 
-	void checkPaddleCollision(Paddle paddle);
+	bool checkPaddleCollision(Paddle paddle);
 	int checkBrickCollision(Level level);
 	bool checkDeath(Paddle paddle);
 

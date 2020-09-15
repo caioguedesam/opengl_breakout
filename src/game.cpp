@@ -59,6 +59,9 @@ void Game::init(void) {
 	initBall(ballRadius, ballOrigin, ballColor, ballDirection, ballMaxSpeed, ballMinSpeed);
 	initLevel(brickMatrix, firstBrickPos, brickPadding);
 
+	audio.init();
+	audio.startMusic();
+
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 	glShadeModel(GL_FLAT);
 }
@@ -164,8 +167,11 @@ void Game::updateDeltaTime(void) {
 void Game::updateCollisions(void) {
 	if (ball.clampBallToScreenBounds(displayWidth, displayHeight)) {
 		shakeCamera(boundsShakeAmount, boundsShakeTime);
+		audio.playSound('w');
 	}
-	ball.checkPaddleCollision(paddle);
+	if(ball.checkPaddleCollision(paddle)) {
+		audio.playSound('p');
+	}
 	if (!isDead && ball.checkDeath(paddle))
 		loseLife();
 
@@ -175,6 +181,7 @@ void Game::updateCollisions(void) {
 		increaseBallSpeed();
 		changePaddleSize(brickColl);
 		shakeCamera(brickShakeAmount, brickShakeTime);
+		audio.playSound('b');
 	}
 }
 
@@ -213,9 +220,11 @@ void Game::increaseBallSpeed(void) {
 void Game::changePaddleSize(int brickValue) {
 	if (brickValue == -1) {
 		paddle.size.x += (paddleSize.x / 5);
+		audio.playSound('u');
 	}
 	else if (brickValue == -2) {
 		paddle.size.x -= (paddleSize.x / 5);
+		audio.playSound('d');
 	}
 }
 
@@ -246,6 +255,7 @@ void Game::play(void) {
 
 void Game::quit(void) {
 	level.deleteAllBricks();
+	audio.freeResources();
 	exit(EXIT_SUCCESS);
 }
 
